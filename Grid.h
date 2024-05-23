@@ -46,13 +46,27 @@ class Ring{
             if (init_options == "brr")
             {
                 //
-                index_t plusrange=static_cast<index_t>(floor(static_cast<int>(size/10)));  //NOT CHECKED
+                index_t plusrange=static_cast<index_t>(floor(static_cast<int>(size/10)));  //Barrera de 1/10*N
 
                 for (index_t i = 0; i < size; i++)
                 {
                     if ((i>size/2-plusrange) & (i<size/2+plusrange)){ring[i]=1;}else{ring[i]=-1;}
                 }
             }        
+            if (init_options=="rnd"){
+                for (index_t i=0;i<size;i++){
+                    double s;
+                    s = r_distribution(generator);
+                    if (s < 0.5)
+                    {
+                        ring[i] = 1;
+                    }
+                    else
+                    {
+                        ring[i] = -1;
+                    }
+                }
+            }
             return 0;
         }
 
@@ -68,6 +82,18 @@ class Ring{
                 e+=ring[i]*(left+right);
             }
             e=-0.5*e;
+            return e;
+        }
+        double energy_spin(int i){
+            double e; int left, right;
+            index_t pos=static_cast<index_t>(i);
+            
+            if(i==0){left=ring[size];}
+            if(pos==size){right=ring[0];}
+            left = ring[pos - 1];
+            right = ring[pos + 1];
+            e=ring[pos]*(left+right);
+            e = -0.5 * e;
             return e;
         }
 
