@@ -6,6 +6,7 @@
 #include <cmath>
 #include <chrono>
 #include <random>
+#include<algorithm>
 using namespace std; 
 
 class Ring{
@@ -42,7 +43,17 @@ class Ring{
         // uqr, opposite sign up, pongo el signo contrario en el j+1 cuando inicialize un j;
         // ubd, until bound, magnetizo hasta 0 con un cierto error.
         // brr, barrera, todos los ups metidos en una barrera cuadadrada centrada. El único que ahoramismo está adaptado a 1D
+        // zmg, zero magnetization, baraja la mitad de elementos -1 y 1.
         {
+            if (init_options == "zmg") {
+                std::vector<int> values(size / 2, 1);
+                values.insert(values.end(), size / 2, -1);
+                std::shuffle(values.begin(), values.end(), generator);
+
+                for (index_t i = 0; i < size; ++i) {
+                    ring[i] = values[i];
+                }
+            }
             if (init_options == "brr")
             {
                 //
@@ -77,8 +88,8 @@ class Ring{
 
             for(i=0;i<size;i++){
                 left=ring[i-1]; right=ring[i+1];
-                if(i==0){left=ring[size];}
-                if(i==size){right=ring[0];}     
+                if(i==0){left=ring[size-1];}
+                if(i==size-1){right=ring[0];}     
                 e+=ring[i]*(left+right);
             }
             e=-0.5*e;
@@ -88,10 +99,8 @@ class Ring{
             double e; int left, right;
             index_t pos=static_cast<index_t>(i);
             
-            if(i==0){left=ring[size];}
-            if(pos==size){right=ring[0];}
-            left = ring[pos - 1];
-            right = ring[pos + 1];
+            if(i==0){left=ring[size-1];}else{left = ring[pos - 1];}
+            if(pos==size-1){right=ring[0];}else{right = ring[pos + 1];}
             e=ring[pos]*(left+right);
             e = -0.5 * e;
             return e;

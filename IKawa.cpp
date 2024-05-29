@@ -3,6 +3,7 @@
 // Condiciones de contorno periodicas
 // Debe haber un parametro que indique si hay más reacción que difusión
 // Ir tocando R desde 1. Simular a tiempos muy largos
+//t=1 R=10 sin reaaccion, comprobqr con nuevo generador de nº aleatorios.
 #include <vector> 
 #include<iostream>
 #include <stdio.h>
@@ -15,22 +16,24 @@ using namespace std;
 using index_t = vector<int>::size_type; // Define index_t as the size type of vector<int>
 
 const int n = 600;            // Make n of type index_t
-const int t_max = 3000;        // Tiempo
-const int R = 0;             // Alcance
+const int t_max = 10000;        // Tiempo
+const int R = 10;             // Alcance
 const double alphadif=1.0;     //Probablidad de difusión
-const double alphareac=0.5;
+const double alphareac=0.000;
 
-float temperature_vals[] = {0.01f,0.1f,0.2f,0.3f,0.5f,0.8f,1.2f,1.7f}; // TEMPERATURAS ENTERAS DE 1 A 10
+float temperature_vals[] = {0.005f,0.01f,0.015f,0.5f,1.0f,2.5f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
 double p_val(int i1, int i2, float temperature);
 double p_val_reac(int i1, float temperature);
-void print(FILE *out,int t);
+void print(FILE *out);
 
 unsigned seed1 = 1946402705; // semilla generador de números aleatorios
 mt19937_64 generator(seed1); // generador  mt19937_64
 
 //Tenemos varias distribuciones de numeros aleatorios
 uniform_int_distribution<int> i_distribution(0, n - 1);     //Distribución random para los i
+uniform_int_distribution<int> vecino_distribution(0, n - 1);     // Distribución random para los i
+
 uniform_real_distribution<double> r_distribution(0., 1.);   // initialize the distribution r_distribution
 
 //Constructor
@@ -41,7 +44,7 @@ int main()
 
     int t_size = sizeof(temperature_vals) / sizeof(temperature_vals[0]); // ¿Cuantas temperaturas hay?
     float temperature;
-    char filename[31]; // Restringido a 31 caracteres, entonces solo caben en el nombre temperaturas menores de 10 y con 1 cifra decimal
+    char filename[33]; // Restringido a 33 caracteres, entonces solo caben en el nombre temperaturas menores de 10 y con 2 cifra decimal
     
     //Flips-data
     FILE *magnetization_data;
@@ -53,10 +56,10 @@ int main()
         ring.initialize("rnd");
 
 
-        //fprintf(stdout, "\n \n \n Magnet 0: %f", ring.magnetization());
+        fprintf(stdout, "\n \n \n Magnet 0: %f", ring.magnetization());
 
         temperature = temperature_vals[t_iter];
-        sprintf(filename, "./ising_data/ising_dataT%.1f.dat", temperature); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data/ising_dataT%.3f.dat", temperature); // si no funciona %i probar %d
         fprintf(stdout, "\n Archivo: %s",filename);
 
         FILE *flips_data = fopen(filename, "w");
@@ -81,12 +84,15 @@ int main()
                 i1 = i_distribution(generator);
                 //uniform_int_distribution<int> vecino_dif_distribution(i1-R, i1+R);
                 //i2 = vecino_dif_distribution(generator);
-                //if(i2<0){i2+=n;}else if (i2>n-1){i2-=n;}
-                i2= i_distribution(generator);
+                i2= vecino_distribution(generator);
+    
                 
                 
                 
                 if ((i2>(i1-R))&(i2<(i1+R))){
+
+                    if(i2<0){i2+=n;}else if (i2>n-1){i2-=n;}
+
                     p = p_val(i1, i2, temperature);
                     // Cambio de sitio (o no)
                     ji = r_distribution(generator);
@@ -112,8 +118,10 @@ int main()
                     }
                 }
             }
-            print(flips_data,t);
+            
+            print(flips_data);
         }
+        fprintf(stdout, "\n \n \n Magnet final: %f", ring.magnetization());
         fclose(flips_data);
     }
     fclose(magnetization_data);
@@ -156,7 +164,7 @@ double p_val_reac(int i1, float temperature){
     return p;
 }
 
-void print(FILE *out,int t)   //Solo para imprimir el grid
+void print(FILE *out)   //Solo para imprimir el grid
 {
     //fprintf(out,"%i ",t);
     for (int i = 0; i < n; i++)
