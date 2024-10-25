@@ -8,18 +8,18 @@ using namespace std;
 //using index = vector<int>::size_type;
 
 //pararelizar
-//computo en cloud
-//calcular campo, modelasr dinamica glauber.
+//en el nuevo test no esta metido los rangos mas elegantes
 
 unsigned int n = 50;
 unsigned int R = 10;
 unsigned int Rg=0;
-const int t_max = 1000; // Tiempo
+const int t_max = 10000; // Tiempo
 const double alphadif = 1.0; // Probablidad de difusión
 const double alphareac = 0.0000000001;
 float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f,2.0f,5.0f,9.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
-vector<int> ring(n, 0);                                         
+vector<int> ring(n, 0);          
+vector<int>init_ring(n,0);                               
 vector<vector<int>> matk(n, vector<int>(n, 0));   //matriz de conectividad
 vector<vector<int>> hk(n,vector<int>(n,0));      //campo dinamica kawasaki
 vector<vector<int>> matg(n, vector<int>(n, 0));  // matriz de conectividad
@@ -73,16 +73,28 @@ int main(){
             t_iter++;
         }
 
+        //Vuelvo al primer anillo que inicilcé:
+        for(unsigned int i=0;i<n;i++){
+            ring[i]=init_ring[i];
+        }
+
         unsigned int i1, i2;
         double p;
         double ji;
         int t = 0;
         int d = 0;
         count=0;
+        unsigned int low_bound;
+        unsigned int up_bound;
+        unsigned int low_bound_reac;
+        unsigned int up_bound_reac;
+        bool inR=false;
+        bool inRg=false;
         for (t = 0; t < t_max; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
             campokawa();
             campoglaub(); 
+            /*
             if(t==t_max/2){
                 //fprintf(stdout, "\n");
                 for (int i=0;i<n;i++){
@@ -94,7 +106,7 @@ int main(){
                     }
                     //fprintf(stdout,"\n");
                 }
-            }
+            }*/
 
             for (unsigned int try_ = 0; try_ < n; try_++)
             {
@@ -109,14 +121,18 @@ int main(){
                 }*/
 
                 //Para trabajar con índices unsigned teniendo en cuenta la condición circular.
-                unsigned low_bound=(i1>=R)? (i1-R):(i1+n-R);
-                unsigned up_bound=(i1+R)%n; 
-                unsigned int low_bound_reac=(i1>=R+Rg)?(i1-R-Rg):(i1-R-Rg+n);
-                unsigned int up_bound_reac=(i1+R+Rg)%n;
-                
-                //Este es el rango de difusión
-                if (((i2 >= low_bound) && (i2 <= up_bound)) ||
-                    ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))))
+                low_bound=(i1>=R)? (i1-R):(i1+n-R);
+                up_bound=(i1+R)%n; 
+                low_bound_reac=(i1>=R+Rg)?(i1-R-Rg):(i1-R-Rg+n);
+                up_bound_reac=(i1+R+Rg)%n;
+                //Calculo a partir de i1 e i2 si está en rango R o Rg
+                inR=(((i2 >= low_bound) && (i2 <= up_bound)) ||
+                    ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))));
+                inRg=(((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
+                        ((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))));
+
+                // Este es el rango de difusión
+                if (inR)
                 {
                     
                     p = exp(-alphadif * (hk[i1][i2]) / temperature);
@@ -134,12 +150,8 @@ int main(){
                     }
                     //continue;
                 }
-                /*else if (!(((i2 >= low_bound) && (i2 <= up_bound)) ||
-                           ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound)))))
+                else if ((!inR) && (inRg))
                 {
-                    if (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
-                        ((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))))
-                    {
                     // fprintf(stdout,"\n");
                     double pg = exp(-alphareac*(hg[i1]) / temperature);
                     if (pg>1){pg=1;}
@@ -150,8 +162,8 @@ int main(){
                         count++;
                         ring[i1] = -ring[i1];
                     }
-                    }
-                }*/
+                    
+                }
             }
 
             for (unsigned int i = 0; i < n; i++)
@@ -178,11 +190,11 @@ void initialize(){
         s = r_distribution(generator);
         if (s < 0.5)
         {
-            ring[i] = 1;
+            init_ring[i] = 1;
         }
         else
         {
-            ring[i] = -1;
+            init_ring[i] = -1;
         }
 
         for(unsigned int j=i+1;j<=(i+R);j++){
@@ -205,7 +217,7 @@ void campokawa(){
     for(unsigned int i=0;i<n;i++){
         // Energría de la configuración
 
-        for (unsigned int j = 0; j < n; j++)
+        for (unsigned int j = 0; j <= i; j++)
         {
             int sum=0;
             for (unsigned int k=0;k<n;k++){
@@ -214,6 +226,7 @@ void campokawa(){
              sum=sum+matk[j][i]*ring[i]-matk[i][j]*ring[j];
             sum *= (ring[i] - ring[j]);
             hk[i][j]=sum;
+            hk[j][i]=sum;
         }
     }
 }
