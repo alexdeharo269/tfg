@@ -19,7 +19,9 @@ const double alphareac = 0.0000000001;
 float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f,2.0f,5.0f,9.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
 vector<int> ring(n, 0);          
-vector<int>init_ring(n,0);                               
+vector<int>init_ring(n,0);
+vector<int> frozenring(n, 0);
+
 vector<vector<int>> matk(n, vector<int>(n, 0));   //matriz de conectividad
 vector<vector<int>> hk(n,vector<int>(n,0));      //campo dinamica kawasaki
 vector<vector<int>> matg(n, vector<int>(n, 0));  // matriz de conectividad
@@ -32,9 +34,8 @@ uniform_int_distribution<unsigned int> i_distribution(0, n - 1); // Distribució
 uniform_real_distribution<double> r_distribution(0., 1.); // initialize the distribution r_distribution
 
 void initialize();
-void campokawa();
+double campokawa(unsigned int i1, unsigned int i2);
 void campoglaub();
-int count = 0;
 
 int main(){
     
@@ -78,12 +79,14 @@ int main(){
             ring[i]=init_ring[i];
         }
 
+
+
         unsigned int i1, i2;
         double p;
         double ji;
         int t = 0;
         int d = 0;
-        count=0;
+        int count=0;
         unsigned int low_bound;
         unsigned int up_bound;
         unsigned int low_bound_reac;
@@ -92,7 +95,10 @@ int main(){
         bool inRg=false;
         for (t = 0; t < t_max; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
-            campokawa();
+            for (unsigned int i = 0; i < n; i++)
+            {
+                frozenring[i] = ring[i];
+            }
             campoglaub(); 
             /*
             if(t==t_max/2){
@@ -135,7 +141,7 @@ int main(){
                 if (inR)
                 {
                     
-                    p = exp(-alphadif * (hk[i1][i2]) / temperature);
+                    p = exp(-alphadif * campokawa(i1,i2) / temperature);
                     if (p >= 1)
                     {
                         //count++;
@@ -146,7 +152,7 @@ int main(){
                     if (ji < p)
                     {
                         d = d + 1;
-                        swap(ring[i1],ring[i2]);
+                        swap(frozenring[i1],frozenring[i2]);
                     }
                     //continue;
                 }
@@ -160,10 +166,15 @@ int main(){
                     if (ji < pg)
                     {
                         count++;
-                        ring[i1] = -ring[i1];
+                        frozenring[i1] = -frozenring[i1];
                     }
                     
                 }
+            }
+
+            for (unsigned int i = 0; i < n; i++)
+            {
+                ring[i] = frozenring[i];
             }
 
             for (unsigned int i = 0; i < n; i++)
@@ -211,24 +222,17 @@ void initialize(){
 
 }
 
+double campokawa(unsigned int i1, unsigned int i2)
+{
 
-
-void campokawa(){
-    for(unsigned int i=0;i<n;i++){
-        // Energría de la configuración
-
-        for (unsigned int j = 0; j <= i; j++)
-        {
-            int sum=0;
-            for (unsigned int k=0;k<n;k++){
-                sum = sum + ring[k] * matk[i][k] - ring[k] * matk[j][k];
-            }
-             sum=sum+matk[j][i]*ring[i]-matk[i][j]*ring[j];
-            sum *= (ring[i] - ring[j]);
-            hk[i][j]=sum;
-            hk[j][i]=sum;
-        }
+    int sum = 0;
+    for (unsigned int k = 0; k < n; k++)
+    {
+        sum = sum + ring[k] * matk[i1][k] - ring[k] * matk[i2][k];
     }
+    sum = sum + matk[i2][i1] * ring[i1] - matk[i1][i2] * ring[i2];
+    sum *= (ring[i1] - ring[i2]);
+    return sum;
 }
 
 void campoglaub(){
