@@ -12,12 +12,12 @@ using namespace std;
 //calcular campo, modelasr dinamica glauber.
 
 unsigned int n = 50;
-unsigned int R = 5;
+unsigned int R = 10;
 unsigned int Rg=0;
 const int t_max = 1000; // Tiempo
 const double alphadif = 1.0; // Probablidad de difusión
 const double alphareac = 0.0000000001;
-float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f,9.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
+float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f,2.0f,5.0f,9.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
 vector<int> ring(n, 0);                                         
 vector<vector<int>> matk(n, vector<int>(n, 0));   //matriz de conectividad
@@ -82,7 +82,19 @@ int main(){
         for (t = 0; t < t_max; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
             campokawa();
-            campoglaub();
+            campoglaub(); 
+            if(t==t_max/2){
+                //fprintf(stdout, "\n");
+                for (int i=0;i<n;i++){
+                    for(int j=0;j<n;j++){
+                        if(hk[i][j]!=hk[j][i]){
+                            //fprintf(stdout, "%i", hk[i][j]);
+                        }
+                        
+                    }
+                    //fprintf(stdout,"\n");
+                }
+            }
 
             for (unsigned int try_ = 0; try_ < n; try_++)
             {
@@ -122,7 +134,7 @@ int main(){
                     }
                     //continue;
                 }
-                else if (!(((i2 >= low_bound) && (i2 <= up_bound)) ||
+                /*else if (!(((i2 >= low_bound) && (i2 <= up_bound)) ||
                            ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound)))))
                 {
                     if (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
@@ -139,7 +151,7 @@ int main(){
                         ring[i1] = -ring[i1];
                     }
                     }
-                }
+                }*/
             }
 
             for (unsigned int i = 0; i < n; i++)
