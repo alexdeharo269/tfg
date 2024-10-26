@@ -1,11 +1,12 @@
+
 #include<stdio.h>
 #include<vector>
 #include <math.h>
 #include <cmath>
 #include <chrono>
 #include <random>
+#include <omp.h>
 using namespace std;
-//using index = vector<int>::size_type;
 
 //pararelizar
 //en el nuevo test no esta metido los rangos mas elegantes
@@ -18,34 +19,35 @@ const double alphadif = 1.0; // Probablidad de difusión
 const double alphareac = 0.0000000001;
 float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f,2.0f,5.0f,9.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
-vector<int> ring(n, 0);          
+ 
 vector<int>init_ring(n,0);
-vector<int> frozenring(n, 0);
 
 vector<vector<int>> matk(n, vector<int>(n, 0));   //matriz de conectividad
-vector<vector<int>> hk(n,vector<int>(n,0));      //campo dinamica kawasaki
 vector<vector<int>> matg(n, vector<int>(n, 0));  // matriz de conectividad
 vector<int> hg(n, 0);    // campo dinamica glauber
 
 unsigned seed1 = 1944244;   // semilla generador de números aleatorios
 mt19937_64 generator(seed1); // generador  mt19937_64
-// Tenemos varias distribuciones de numeros aleatorios
-uniform_int_distribution<unsigned int> i_distribution(0, n - 1); // Distribución random para los i
-uniform_real_distribution<double> r_distribution(0., 1.); // initialize the distribution r_distribution
+
+//random_device{}(); para generar numeros realmente aleatorios que paso como semillas
+//Como están los threads es lo más correcto porque cada simulación llega exactamente a la misma secuencia del 
+//generador de numeros pseudoaleatorios.
+
 
 void initialize();
-double campokawa(unsigned int i1, unsigned int i2);
-void campoglaub();
+double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring);
+void campoglaub(vector<int> &ring);
 
 int main(){
-    
+    auto start = std::chrono::system_clock::now();
+
     initialize();
     //Print a la matriz de conectividad
 
     double sum = 0;
     for (unsigned int i = 0; i < n; i++)
     {
-        sum += ring[i];
+        sum += init_ring[i];
     }
     fprintf(stdout, " \n Magnetizacion inicial: %.4f\n", sum/n);
     
@@ -63,10 +65,11 @@ int main(){
     float temperature;
     char filename[35]; // Restringido a 35 caracteres, entonces solo caben en el nombre temperaturas menores de 10 y con 2 cifra decimal
 
+    #pragma omp parallel for shared(temperature_vals, init_ring, seed1) private(generator, temperature, filename)
     for (int t_iter = 0; t_iter < t_size; t_iter++){
         temperature = temperature_vals[t_iter];
         sprintf(filename, "./ising_data/ising_dataT%.3f.dat", temperature); // si no funciona %i probar %d
-        fprintf(stdout, "\n Archivo: %s",filename);
+        
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)
         {
@@ -74,10 +77,15 @@ int main(){
             t_iter++;
         }
 
+        uniform_int_distribution<unsigned int> i_distribution(0, n - 1); // Distribución random para los i
+        uniform_real_distribution<double> r_distribution(0., 1.);        // initialize the distribution r_distribution
+
+        vector<int> frozenring(n, 0);
+        vector<int> ring = init_ring;
+
         //Vuelvo al primer anillo que inicilcé:
-        for(unsigned int i=0;i<n;i++){
-            ring[i]=init_ring[i];
-        }
+        ring=init_ring;
+        
 
 
 
@@ -95,11 +103,9 @@ int main(){
         bool inRg=false;
         for (t = 0; t < t_max; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
-            for (unsigned int i = 0; i < n; i++)
-            {
-                frozenring[i] = ring[i];
-            }
-            campoglaub(); 
+            frozenring = ring;
+            
+            campoglaub(ring); 
             /*
             if(t==t_max/2){
                 //fprintf(stdout, "\n");
@@ -141,7 +147,7 @@ int main(){
                 if (inR)
                 {
                     
-                    p = exp(-alphadif * campokawa(i1,i2) / temperature);
+                    p = exp(-alphadif * campokawa(i1,i2,ring) / temperature);
                     if (p >= 1)
                     {
                         //count++;
@@ -172,10 +178,8 @@ int main(){
                 }
             }
 
-            for (unsigned int i = 0; i < n; i++)
-            {
-                ring[i] = frozenring[i];
-            }
+            ring = frozenring;
+            
 
             for (unsigned int i = 0; i < n; i++)
             {
@@ -185,9 +189,11 @@ int main(){
             fprintf(flips_data, "\n");
         }
         fclose(flips_data);
-        fprintf(stdout,"  %i  %i",d,count);
+        fprintf(stdout,"\nT=%.1f  ex=%i  sf=%i  thread=%i",temperature,d,count,omp_get_thread_num());
         
     }
+    auto end = std::chrono::system_clock::now();
+    fprintf(stdout, "\nExec time: %d s", chrono::duration_cast<std::chrono::seconds>(end - start).count());
 }
 
 
@@ -195,6 +201,7 @@ int main(){
 
 void initialize(){
     double s;
+    uniform_real_distribution<double> r_distribution(0., 1.);        // initialize the distribution r_distribution
 
     for (unsigned int i = 0; i < n; i++)
     {
@@ -222,7 +229,7 @@ void initialize(){
 
 }
 
-double campokawa(unsigned int i1, unsigned int i2)
+double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring)
 {
 
     int sum = 0;
@@ -235,12 +242,13 @@ double campokawa(unsigned int i1, unsigned int i2)
     return sum;
 }
 
-void campoglaub(){
+void campoglaub(vector<int> &ring)
+{
     for(unsigned int i=0;i<n;i++){
         int sum = 0;
         for (unsigned int j=0;j<n;j++){
             sum+=matg[i][j]*ring[j];
         }
         hg[i]=sum*2*ring[i];
-    }    
+    }
 }
