@@ -16,21 +16,19 @@ using namespace std;
 
 double pp = 1;
 
-unsigned int n = 128;
-unsigned int R = 5;
+unsigned int n = 512;
 unsigned int Rg=0;
 const int t_max = 500; // Tiempo
 const double alphadif = 1.0; // Probablidad de difusión
 const double alphareac = 0.5;
 float temperature=0.001f;
-int r_size=10;
+int r_size=40;
 
-vector<unsigned>R_vals(r_size,0);
+vector<unsigned int>R_vals(r_size,0);
  
 vector<int>init_ring(n,0);
 
-vector<vector<int>> matk(n, vector<int>(n, 0));   //matriz de conectividad
-vector<vector<int>> matg(n, vector<int>(n, 0));  // matriz de conectividad
+
 vector<int> hg(n, 0);    // campo dinamica glauber
 
 unsigned seed1 = 1944243;   // semilla generador de números aleatorios
@@ -42,8 +40,8 @@ mt19937_64 generator(seed1); // generador  mt19937_64
 
 
 void initialize();
-double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring);
-void campoglaub(vector<int> &ring);
+double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk);
+void campoglaub(vector<int> &ring, vector<vector<int>> &matg);
 double mdl(vector<int> &ring);
 
 int main()
@@ -80,10 +78,27 @@ int main()
     }
 
     char filename[43]; // Restringido a 42 caracteres, entonces solo caben en el nombre de R hasta 100.
+    unsigned int R;
 
-    #pragma omp parallel for shared(R_vals ,init_ring, seed1) private(generator, R, filename)
+    #pragma omp parallel for shared(R_vals ,init_ring, seed1) private(generator, filename, R)
     for (int r_iter = 0; r_iter < r_size; r_iter++){
         R = R_vals[r_iter];
+        vector<vector<int>> matk(n, vector<int>(n, 0)); // matriz de conectividad
+        vector<vector<int>> matg(n, vector<int>(n, 0)); // matriz de conectividad
+        for(unsigned int i=0;i<n;i++){
+            for (unsigned int j = i + 1; j <= (i + R); j++)
+            {
+                matk[i][j % n] = 1;
+                matk[j % n][i] = 1;
+            }
+
+            for (unsigned int j = i + 1; j <= (i + R + Rg); j++)
+            {
+                matg[i][j % n] = 1 - matk[i][j % n];
+                matg[j % n][i] = 1 - matk[j % n][i];
+            }
+        }
+
         double mean_domain_length;
         double length_t=0;
         double length_tm1=0;
@@ -121,12 +136,16 @@ int main()
         unsigned int up_bound_reac;
         bool inR=false;
         bool inRg=false;
+        //int t_lim=t_max;
+        int t_lim=t_max;
+        int tries=0;
+        int max_tries=10;
 
-        for (t = 0; t < t_max; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
+        for (t = 0; t < t_lim; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
             frozenring = ring;
             
-            campoglaub(ring); 
+            campoglaub(ring,matg); 
             /*
             if(t==t_max/2){
                 //fprintf(stdout, "\n");
@@ -156,31 +175,38 @@ int main()
                 // Para trabajar con índices unsigned teniendo en cuenta la condición circular.
                 low_bound = (i1 >= R) ? (i1 - R) : (i1 + n - R);
                 up_bound = (i1 + R) % n;
-                low_bound_reac = (i1 >= R + Rg) ? (i1 - R - Rg) : (i1 - R - Rg + n);
-                up_bound_reac = (i1 + R + Rg) % n;
+                //low_bound_reac = (i1 >= R + Rg) ? (i1 - R - Rg) : (i1 - R - Rg + n);
+                //up_bound_reac = (i1 + R + Rg) % n;
                 // Calculo a partir de i1 e i2 si está en rango R o Rg
                 inR = (((i2 >= low_bound) && (i2 <= up_bound)) ||
                        ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))));
-                inRg = (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
-                        ((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))));
+                //inRg = (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
+                        //((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))));
 
                              
                 double xr= r_distribution(generator);
-                
-                double delta;
+                double delta=campokawa(i1,i2,ring,matk);
+                if((inR)&(delta<=0))
+                {
+                    swap(frozenring[i1], frozenring[i2]);
+                }
+                /*
                 int mov;
                 if(xr<pp){
                     //dif
                     //fprintf(stdout, "%f", xr);
-                    delta=alphadif*campokawa(i1,i2,ring); mov=0;
+                    delta=alphadif*campokawa(i1,i2,ring,matk); mov=0;
                 }
                 else{//reac
                     delta=alphareac*hg[i1]; mov=1;
-                }
+                }*/
                 
-
+                //En el limite de temperatura 0 sin reacción:
+                //if(delta<=0){swap(frozenring[i1], frozenring[i2]);}
+                /*
                 p = exp(-delta / temperature);
-                if (p >= 1)
+                
+                if (delta <= 0)
                 {
                     // count++;
                     p = 1;
@@ -197,43 +223,6 @@ int main()
                         count++;
                         frozenring[i1] = -frozenring[i1];
                     }
-                }
-                // continue;
-                
-                
-                /*
-                // Este es el rango de difusión
-                if (inR)
-                {
-                    
-                    p = exp(-alphadif * campokawa(i1,i2,ring) / temperature);
-                    if (p >= 1)
-                    {
-                        //count++;
-                        p = 1;
-                    }
-                    //  Cambio de sitio (o no),
-                    ji = r_distribution(generator);
-                    if (ji < p)
-                    {
-                        d = d + 1;
-                        swap(frozenring[i1],frozenring[i2]);
-                    }
-                    //continue;
-                }
-                else if ((!inR) && (inRg))
-                {
-                    // fprintf(stdout,"\n");
-                    double pg = exp(-alphareac*(hg[i1]) / temperature);
-                    if (pg>1){pg=1;}
-                    // Cambio de spin
-                    ji = r_distribution(generator);
-                    if (ji < pg)
-                    {
-                        count++;
-                        frozenring[i1] = -frozenring[i1];
-                    }
-                    
                 }*/
             }
 
@@ -250,7 +239,10 @@ int main()
             length_t = mdl(ring);
             if(length_t!=length_tm1){length_tm1=length_t;frozentime=t;}
             
-            
+            if((t==t_lim-1)&((t_lim-frozentime)<200)&(tries<max_tries)){
+                tries++;
+                t_lim+=500;
+            }
 
             
         }
@@ -258,9 +250,11 @@ int main()
         //fprintf(stdout,"\nT=%.1f  ex=%i  sf=%i  thread=%i",temperature,d,count,omp_get_thread_num());
         mean_domain_length = mdl(ring);
 
-        fprintf(stdout, "\nR=%i  MDL=%.2f, thread=%i,  Tr=%i", R, mean_domain_length,
-                omp_get_thread_num(), frozentime);
-        fprintf(r_data,"%i %.2f\n",R,mean_domain_length);
+        //fprintf(stdout, "\nR=%i  MDL=%.2f, thread=%i,  Tr=%i", R, mean_domain_length,
+        //        omp_get_thread_num(), frozentime);
+        fprintf(stdout, "\nR=%i  MDL=%.2f, Tr=%i, Tries=%i", R, mean_domain_length,
+                frozentime, tries);
+        fprintf(r_data,"%i %.2f %i\n",R,mean_domain_length, frozentime);
 
 
     }
@@ -284,22 +278,10 @@ void initialize(){
         {
             init_ring[i] = -1;
         }
-
-        for(unsigned int j=i+1;j<=(i+R);j++){
-            matk[i][j % n] = 1;
-            matk[j%n][i]=1;
-        }
-
-        for(unsigned int j=i+1;j<=(i+R+Rg);j++){
-            matg[i][j%n]=1-matk[i][j%n];
-            matg[j % n][i] = 1 - matk[j%n][i];
-        }
     }
-
-
 }
 
-double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring)
+double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk)
 {
 
     int sum = 0;
@@ -312,7 +294,7 @@ double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring)
     return sum;
 }
 
-void campoglaub(vector<int> &ring)
+void campoglaub(vector<int> &ring, vector<vector<int>> &matg)
 {
     for(unsigned int i=0;i<n;i++){
         int sum = 0;
