@@ -17,14 +17,13 @@ using namespace std;
 double pp = 1;
 
 unsigned int n = 128;
-unsigned int R;
+unsigned int R = 5;
 unsigned int Rg=0;
 const int t_max = 500; // Tiempo
 const double alphadif = 1.0; // Probablidad de difusión
 const double alphareac = 0.5;
 float temperature=0.001f;
-int r_size=15;
-const int tries_convergence=10;
+int r_size=10;
 
 vector<unsigned>R_vals(r_size,0);
  
@@ -89,9 +88,6 @@ int main()
         double length_t=0;
         double length_tm1=0;
         int frozentime=0;
-        int t_lim=t_max;
-        int tries=0;
-        
 
         sprintf(filename, "./ising_data_R_low_temp/ising_dataR%i.dat", R); // si no funciona %i probar %d
         
@@ -126,7 +122,7 @@ int main()
         bool inR=false;
         bool inRg=false;
 
-        for (t = 0; t < t_lim; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
+        for (t = 0; t < t_max; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
             frozenring = ring;
             
@@ -254,11 +250,7 @@ int main()
             length_t = mdl(ring);
             if(length_t!=length_tm1){length_tm1=length_t;frozentime=t;}
             
-            //Para algunos R conviene hacer simulaciones más largas
-            if((frozentime<500)&(tries<tries_convergence)){
-                t_lim+=500; tries++;
-                fprintf(stdout,"\r Try nº: %i\n",tries );
-            }
+            
 
             
         }
@@ -266,9 +258,9 @@ int main()
         //fprintf(stdout,"\nT=%.1f  ex=%i  sf=%i  thread=%i",temperature,d,count,omp_get_thread_num());
         mean_domain_length = mdl(ring);
 
-        fprintf(stdout, "\nR=%i  MDL=%.2f, thread=%i, Tr=%i", R, mean_domain_length,
-        omp_get_thread_num(), frozentime);
-        fprintf(r_data,"%i %.2f %i\n",R,mean_domain_length, frozentime);
+        fprintf(stdout, "\nR=%i  MDL=%.2f, thread=%i,  Tr=%i", R, mean_domain_length,
+                omp_get_thread_num(), frozentime);
+        fprintf(r_data,"%i %.2f\n",R,mean_domain_length);
 
 
     }
