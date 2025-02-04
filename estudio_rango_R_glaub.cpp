@@ -1,9 +1,5 @@
-//Nuevo test modelando dinamicas como en el programa de joaquin
-
-//19/11: Estudio para ver el exponente del tamaño de los dominios a baja temperatura.
-//Solo difusión, le damos 1000 pasos MC y sustituyo la estructura de temperaturas por una estructura de R.
-//Voy a intentar sacar un mean domain length al final de los 1000 pasos 
-
+//Glauber y reac dif para temperatura 0
+//Estudio del MDL y tiempo hasta el estacionario 
 #include<stdio.h>
 #include<vector>
 #include <math.h>
@@ -16,12 +12,12 @@ using namespace std;
 
 double pp = 1;
 
-unsigned int n =64;
+unsigned int n = 128;
 unsigned int Rg=0;
 const int t_max = 500; // Tiempo
 
 float temperature=0.001f;
-long long unsigned int r_size=40;
+unsigned r_size=20;
 
 vector<unsigned int>R_vals(r_size,0);
  
@@ -39,7 +35,6 @@ mt19937_64 generator(seed1); // generador  mt19937_64
 
 
 void initialize();
-double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk);
 void campoglaub(vector<int> &ring, vector<vector<int>> &matg);
 double mdl(vector<int> &ring);
 
@@ -68,10 +63,10 @@ int main()
         fprintf(stdout,"\n");
     }*/
 
-    FILE *r_data = fopen("./ising_data_R_low_temp/r_data.dat", "w");
+    FILE *r_data = fopen("./ising_data_R_low_temp_glaub/r_data.dat", "w");
     
-    fprintf(stdout, "%llu", r_size);
-    for (unsigned i = 0; i < r_size; i++)
+    fprintf(stdout, "%i", r_size);
+    for (unsigned int i = 0; i < r_size; i++)
     {
         R_vals[i] = i + 1;
     }
@@ -80,7 +75,7 @@ int main()
     unsigned int R;
 
     #pragma omp parallel for shared(R_vals ,init_ring, seed1) private(generator, filename, R)
-    for (unsigned r_iter = 0; r_iter < r_size; r_iter++){
+    for (unsigned int r_iter = 0; r_iter < r_size; r_iter++){
         R = R_vals[r_iter];
         vector<vector<int>> matk(n, vector<int>(n, 0)); // matriz de conectividad
         vector<vector<int>> matg(n, vector<int>(n, 0)); // matriz de conectividad
@@ -103,7 +98,7 @@ int main()
         double length_tm1=0;
         int frozentime=0;
 
-        sprintf(filename, "./ising_data_R_low_temp/ising_dataR%i.dat", R); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data_R_low_temp_glaub/ising_dataR%i.dat", R); // si no funciona %i probar %d
         
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)
@@ -144,7 +139,7 @@ int main()
         {
             frozenring = ring;
             
-            campoglaub(ring,matg); 
+            campoglaub(ring,matk); 
             /*
             if(t==t_max/2){
                 //fprintf(stdout, "\n");
@@ -184,10 +179,10 @@ int main()
 
                              
                 //double xr= r_distribution(generator);
-                double delta=campokawa(i1,i2,ring,matk);
+                double delta=hg[i1];
                 if((inR)&(delta<=0))
                 {
-                    swap(frozenring[i1], frozenring[i2]);
+                    frozenring[i1]=-frozenring[i1];
                 }
                 /*
                 int mov;
@@ -280,18 +275,6 @@ void initialize(){
     }
 }
 
-double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk)
-{
-
-    int sum = 0;
-    for (unsigned int k = 0; k < n; k++)
-    {
-        sum = sum + ring[k] * matk[i1][k] - ring[k] * matk[i2][k];
-    }
-    sum = sum + matk[i2][i1] * ring[i1] - matk[i1][i2] * ring[i2];
-    sum *= (ring[i1] - ring[i2]);
-    return sum;
-}
 
 void campoglaub(vector<int> &ring, vector<vector<int>> &matg)
 {

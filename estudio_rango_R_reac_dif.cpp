@@ -14,14 +14,13 @@
 #include<numeric>
 using namespace std;
 
-double pp = 1;
+double pp = 0.99;
 
-unsigned int n =64;
-unsigned int Rg=0;
+unsigned int n = 256;
+unsigned int Rg=30;
 const int t_max = 500; // Tiempo
 
-float temperature=0.001f;
-long long unsigned int r_size=40;
+unsigned r_size=40;
 
 vector<unsigned int>R_vals(r_size,0);
  
@@ -68,9 +67,9 @@ int main()
         fprintf(stdout,"\n");
     }*/
 
-    FILE *r_data = fopen("./ising_data_R_low_temp/r_data.dat", "w");
+    FILE *r_data = fopen("./ising_data_R_low_temp_reac_dif/r_data.dat", "w");
     
-    fprintf(stdout, "%llu", r_size);
+    fprintf(stdout, "%i", r_size);
     for (unsigned i = 0; i < r_size; i++)
     {
         R_vals[i] = i + 1;
@@ -103,7 +102,7 @@ int main()
         double length_tm1=0;
         int frozentime=0;
 
-        sprintf(filename, "./ising_data_R_low_temp/ising_dataR%i.dat", R); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data_R_low_temp_reac_dif/ising_dataR%i.dat", R); // si no funciona %i probar %d
         
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)
@@ -124,21 +123,21 @@ int main()
         //fprintf(stdout, "\n%f", pp);
 
         unsigned int i1, i2;
-        //double p;
+        //int p;
         //double ji;
         int t = 0;
-        //int d = 0;
-        //int count=0;
+        int swaps = 0;
+        int flips=0;
         unsigned int low_bound;
         unsigned int up_bound;
-        //unsigned int low_bound_reac;
-        //unsigned int up_bound_reac;
+        unsigned int low_bound_reac;
+        unsigned int up_bound_reac;
         bool inR=false;
-        //bool inRg=false;
+        bool inRg=false;
         //int t_lim=t_max;
         int t_lim=t_max;
         int tries=0;
-        int max_tries=10;
+        int max_tries=50;
 
         for (t = 0; t < t_lim; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
@@ -159,7 +158,7 @@ int main()
                 }
             }*/
 
-            for (unsigned int try_ = 0; try_ < n / ((2 * R * pp / n + 2 * Rg * (1 - pp) / n)); try_++)
+            for (unsigned int try_ = 0; try_ < round(n / ((2 * R * pp / n + 2 * Rg * (1 - pp) / n))); try_++)
             {
                 i1 = i_distribution(generator);
                 i2 = i_distribution(generator);
@@ -174,55 +173,36 @@ int main()
                 // Para trabajar con índices unsigned teniendo en cuenta la condición circular.
                 low_bound = (i1 >= R) ? (i1 - R) : (i1 + n - R);
                 up_bound = (i1 + R) % n;
-                //low_bound_reac = (i1 >= R + Rg) ? (i1 - R - Rg) : (i1 - R - Rg + n);
-                //up_bound_reac = (i1 + R + Rg) % n;
+                low_bound_reac = (i1 >= R + Rg) ? (i1 - R - Rg) : (i1 - R - Rg + n);
+                up_bound_reac = (i1 + R + Rg) % n;
                 // Calculo a partir de i1 e i2 si está en rango R o Rg
                 inR = (((i2 >= low_bound) && (i2 <= up_bound)) ||
                        ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))));
-                //inRg = (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
-                        //((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))));
+                inRg = (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
+                        ((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))));
 
                              
-                //double xr= r_distribution(generator);
-                double delta=campokawa(i1,i2,ring,matk);
-                if((inR)&(delta<=0))
-                {
-                    swap(frozenring[i1], frozenring[i2]);
-                }
-                /*
+                double xr= r_distribution(generator);
+                double delta;
                 int mov;
                 if(xr<pp){
-                    //dif
-                    //fprintf(stdout, "%f", xr);
-                    delta=alphadif*campokawa(i1,i2,ring,matk); mov=0;
+                    delta=campokawa(i1,i2,ring,matk); mov=0;
                 }
                 else{//reac
-                    delta=alphareac*hg[i1]; mov=1;
-                }*/
-                
-                //En el limite de temperatura 0 sin reacción:
-                //if(delta<=0){swap(frozenring[i1], frozenring[i2]);}
-                /*
-                p = exp(-delta / temperature);
+                    delta=hg[i1]; mov=1;
+                }
                 
                 if (delta <= 0)
                 {
-                    // count++;
-                    p = 1;
-                }
-                //  Cambio de sitio (o no),
-                ji = r_distribution(generator);
-                if (ji < p)
-                {
                     if((mov==0)&&(inR)){
-                        d = d + 1;
+                        swaps++;
                         swap(frozenring[i1], frozenring[i2]);
                     }
                     if((mov==1)&&(inRg)&&(!inR)){
-                        count++;
+                        flips++;
                         frozenring[i1] = -frozenring[i1];
                     }
-                }*/
+                }
             }
 
             ring = frozenring;
@@ -307,6 +287,7 @@ void campoglaub(vector<int> &ring, vector<vector<int>> &matg)
 double mdl(vector<int> &ring){
     //Que cuente a partir del primer cambio para que no ponga dominios extra por las condicioens de contorno
     double k=0;
+    
     for(unsigned j=1; j<n; j++){
         k+=abs(ring[j]-ring[j-1])/2;
     }
@@ -314,3 +295,4 @@ double mdl(vector<int> &ring){
     
     return n/k;
 }
+
