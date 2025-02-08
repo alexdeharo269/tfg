@@ -7,6 +7,7 @@
 #include <chrono>
 #include <random>
 #include<algorithm>
+#include<string>
 using namespace std; 
 
 class Ring{
@@ -14,12 +15,13 @@ class Ring{
         using index_t = vector<int>::size_type; // Define index_t as the size type of vector<int>
         vector<int> ring;
         index_t size;
+        index_t R;
         mt19937_64 generator;
         uniform_real_distribution<double> r_distribution;
 
     public:
             // Constructor
-            Ring(index_t n, unsigned seed) : size(n), generator(seed), r_distribution(0.0, 1.0)
+        Ring(index_t n, unsigned seed, index_t Range) : size(n), R(Range), generator(seed), r_distribution(0.0, 1.0)
         {
             ring.resize(n);
         }
@@ -93,8 +95,34 @@ class Ring{
                 e+=ring[i]*(left+right);
             }
             e=-0.5*e;
+            
             return e;
         }
+        double energy_improved(int i1,int i2){
+            double e=0;
+            int j;
+
+            index_t ii1=static_cast<index_t>(i1);
+            index_t ii2 = static_cast<index_t>(i2);
+
+            int s=static_cast<int>(size);
+            int r=static_cast<int>(R);
+            
+            for(j=i1-r;j<i1+r;j++){
+                   if(j!=i1){
+                       //e += ring[static_cast<index_t>(((j % s) + s) % s)];
+                   }
+                }
+            for(j=i2-r;j<i2+r;j++){
+                   if(j!=i2){
+                       //e += ring[static_cast<index_t>(((j % s)+s)%s)];
+                   }
+                }
+            
+            return e*(ring[ii1]-ring[ii2]);
+            }
+        
+        
         double energy_spin(int i){
             double e; int left, right;
             index_t pos=static_cast<index_t>(i);

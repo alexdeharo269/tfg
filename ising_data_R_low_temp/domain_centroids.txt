@@ -1,0 +1,972 @@
+Row 0:
+  Domain 0: centroid = 126.00, value = 0, length = 51
+  Domain 1: centroid = 24.50, value = 1, length = 2
+  Domain 2: centroid = 26.00, value = 0, length = 1
+  Domain 3: centroid = 29.50, value = 1, length = 6
+  Domain 4: centroid = 33.00, value = 0, length = 1
+  Domain 5: centroid = 62.00, value = 1, length = 57
+  Domain 6: centroid = 91.00, value = 0, length = 1
+  Domain 7: centroid = 94.00, value = 1, length = 5
+  Domain 8: centroid = 97.00, value = 0, length = 1
+  Domain 9: centroid = 99.00, value = 1, length = 3
+
+Row 1:
+  Domain 0: centroid = 123.00, value = 0, length = 45
+  Domain 1: centroid = 18.00, value = 1, length = 1
+  Domain 2: centroid = 20.50, value = 0, length = 4
+  Domain 3: centroid = 56.00, value = 1, length = 67
+  Domain 4: centroid = 90.00, value = 0, length = 1
+  Domain 5: centroid = 91.50, value = 1, length = 2
+  Domain 6: centroid = 93.00, value = 0, length = 1
+  Domain 7: centroid = 95.00, value = 1, length = 3
+  Domain 8: centroid = 98.00, value = 0, length = 3
+  Domain 9: centroid = 100.00, value = 1, length = 1
+
+Row 2:
+  Domain 0: centroid = 114.50, value = 0, length = 46
+  Domain 1: centroid = 10.00, value = 1, length = 1
+  Domain 2: centroid = 13.00, value = 0, length = 5
+  Domain 3: centroid = 16.00, value = 1, length = 1
+  Domain 4: centroid = 17.00, value = 0, length = 1
+  Domain 5: centroid = 19.00, value = 1, length = 3
+  Domain 6: centroid = 21.00, value = 0, length = 1
+  Domain 7: centroid = 49.50, value = 1, length = 56
+  Domain 8: centroid = 78.00, value = 0, length = 1
+  Domain 9: centroid = 80.50, value = 1, length = 4
+  Domain 10: centroid = 83.00, value = 0, length = 1
+  Domain 11: centroid = 84.00, value = 1, length = 1
+  Domain 12: centroid = 85.00, value = 0, length = 1
+  Domain 13: centroid = 87.00, value = 1, length = 3
+  Domain 14: centroid = 89.00, value = 0, length = 1
+  Domain 15: centroid = 90.50, value = 1, length = 2
+
+Row 3:
+  Domain 0: centroid = 114.50, value = 0, length = 50
+  Domain 1: centroid = 47.50, value = 1, length = 72
+  Domain 2: centroid = 86.00, value = 0, length = 5
+  Domain 3: centroid = 89.00, value = 1, length = 1
+
+Row 4:
+  Domain 0: centroid = 115.50, value = 0, length = 44
+  Domain 1: centroid = 10.00, value = 1, length = 1
+  Domain 2: centroid = 11.50, value = 0, length = 2
+  Domain 3: centroid = 13.50, value = 1, length = 2
+  Domain 4: centroid = 16.00, value = 0, length = 3
+  Domain 5: centroid = 46.50, value = 1, length = 58
+  Domain 6: centroid = 76.00, value = 0, length = 1
+  Domain 7: centroid = 78.00, value = 1, length = 3
+  Domain 8: centroid = 80.00, value = 0, length = 1
+  Domain 9: centroid = 81.50, value = 1, length = 2
+  Domain 10: centroid = 83.00, value = 0, length = 1
+  Domain 11: centroid = 85.00, value = 1, length = 3
+  Domain 12: centroid = 89.50, value = 0, length = 6
+  Domain 13: centroid = 93.00, value = 1, length = 1
+
+Row 5:
+  Domain 0: centroid = 114.00, value = 0, length = 47
+  Domain 1: centroid = 10.00, value = 1, length = 1
+  Domain 2: centroid = 11.00, value = 0, length = 1
+  Domain 3: centroid = 12.50, value = 1, length = 2
+  Domain 4: centroid = 16.50, value = 0, length = 6
+  Domain 5: centroid = 52.00, value = 1, length = 65
+  Domain 6: centroid = 85.00, value = 0, length = 1
+  Domain 7: centroid = 86.00, value = 1, length = 1
+  Domain 8: centroid = 88.00, value = 0, length = 3
+  Domain 9: centroid = 90.00, value = 1, length = 1
+
+Row 6:
+  Domain 0: centroid = 128.00, value = 0, length = 43
+  Domain 1: centroid = 22.00, value = 1, length = 1
+  Domain 2: centroid = 23.00, value = 0, length = 1
+  Domain 3: centroid = 24.00, value = 1, length = 1
+  Domain 4: centroid = 25.00, value = 0, length = 1
+  Domain 5: centroid = 26.00, value = 1, length = 1
+  Domain 6: centroid = 27.00, value = 0, length = 1
+  Domain 7: centroid = 30.50, value = 1, length = 6
+  Domain 8: centroid = 34.00, value = 0, length = 1
+  Domain 9: centroid = 65.00, value = 1, length = 61
+  Domain 10: centroid = 96.00, value = 0, length = 1
+  Domain 11: centroid = 97.00, value = 1, length = 1
+  Domain 12: centroid = 99.00, value = 0, length = 3
+  Domain 13: centroid = 101.00, value = 1, length = 1
+  Domain 14: centroid = 103.00, value = 0, length = 3
+  Domain 15: centroid = 105.50, value = 1, length = 2
+
+Row 7:
+  Domain 0: centroid = 120.00, value = 0, length = 45
+  Domain 1: centroid = 15.00, value = 1, length = 1
+  Domain 2: centroid = 16.00, value = 0, length = 1
+  Domain 3: centroid = 17.00, value = 1, length = 1
+  Domain 4: centroid = 18.00, value = 0, length = 1
+  Domain 5: centroid = 20.50, value = 1, length = 4
+  Domain 6: centroid = 23.00, value = 0, length = 1
+  Domain 7: centroid = 53.50, value = 1, length = 60
+  Domain 8: centroid = 84.00, value = 0, length = 1
+  Domain 9: centroid = 88.00, value = 1, length = 7
+  Domain 10: centroid = 93.00, value = 0, length = 3
+  Domain 11: centroid = 96.00, value = 1, length = 3
+
+Row 8:
+  Domain 0: centroid = 121.50, value = 0, length = 44
+  Domain 1: centroid = 17.00, value = 1, length = 3
+  Domain 2: centroid = 19.00, value = 0, length = 1
+  Domain 3: centroid = 50.00, value = 1, length = 61
+  Domain 4: centroid = 81.00, value = 0, length = 1
+  Domain 5: centroid = 85.50, value = 1, length = 8
+  Domain 6: centroid = 90.00, value = 0, length = 1
+  Domain 7: centroid = 91.00, value = 1, length = 1
+  Domain 8: centroid = 92.00, value = 0, length = 1
+  Domain 9: centroid = 93.50, value = 1, length = 2
+  Domain 10: centroid = 96.50, value = 0, length = 4
+  Domain 11: centroid = 99.00, value = 1, length = 1
+
+Row 9:
+  Domain 0: centroid = 122.50, value = 0, length = 42
+  Domain 1: centroid = 16.00, value = 1, length = 1
+  Domain 2: centroid = 19.50, value = 0, length = 6
+  Domain 3: centroid = 24.50, value = 1, length = 4
+  Domain 4: centroid = 27.50, value = 0, length = 2
+  Domain 5: centroid = 30.50, value = 1, length = 4
+  Domain 6: centroid = 33.00, value = 0, length = 1
+  Domain 7: centroid = 59.00, value = 1, length = 51
+  Domain 8: centroid = 85.00, value = 0, length = 1
+  Domain 9: centroid = 87.00, value = 1, length = 3
+  Domain 10: centroid = 89.00, value = 0, length = 1
+  Domain 11: centroid = 90.00, value = 1, length = 1
+  Domain 12: centroid = 91.00, value = 0, length = 1
+  Domain 13: centroid = 92.50, value = 1, length = 2
+  Domain 14: centroid = 94.00, value = 0, length = 1
+  Domain 15: centroid = 96.00, value = 1, length = 3
+  Domain 16: centroid = 99.00, value = 0, length = 3
+  Domain 17: centroid = 101.00, value = 1, length = 1
+
+Row 10:
+  Domain 0: centroid = 115.50, value = 0, length = 44
+  Domain 1: centroid = 10.00, value = 1, length = 1
+  Domain 2: centroid = 12.00, value = 0, length = 3
+  Domain 3: centroid = 14.00, value = 1, length = 1
+  Domain 4: centroid = 15.00, value = 0, length = 1
+  Domain 5: centroid = 16.00, value = 1, length = 1
+  Domain 6: centroid = 17.00, value = 0, length = 1
+  Domain 7: centroid = 50.00, value = 1, length = 65
+  Domain 8: centroid = 84.50, value = 0, length = 4
+  Domain 9: centroid = 88.00, value = 1, length = 3
+  Domain 10: centroid = 90.00, value = 0, length = 1
+  Domain 11: centroid = 91.00, value = 1, length = 1
+  Domain 12: centroid = 92.00, value = 0, length = 1
+  Domain 13: centroid = 93.00, value = 1, length = 1
+
+Row 11:
+  Domain 0: centroid = 0.50, value = 0, length = 2
+  Domain 1: centroid = 2.50, value = 1, length = 2
+  Domain 2: centroid = 4.50, value = 0, length = 2
+  Domain 3: centroid = 36.00, value = 1, length = 61
+  Domain 4: centroid = 67.00, value = 0, length = 1
+  Domain 5: centroid = 71.00, value = 1, length = 7
+  Domain 6: centroid = 75.00, value = 0, length = 1
+  Domain 7: centroid = 76.00, value = 1, length = 1
+  Domain 8: centroid = 77.00, value = 0, length = 1
+  Domain 9: centroid = 78.00, value = 1, length = 1
+  Domain 10: centroid = 102.50, value = 0, length = 48
+  Domain 11: centroid = 127.00, value = 1, length = 1
+
+Row 12:
+  Domain 0: centroid = 0.50, value = 0, length = 2
+  Domain 1: centroid = 4.50, value = 1, length = 6
+  Domain 2: centroid = 8.00, value = 0, length = 1
+  Domain 3: centroid = 35.50, value = 1, length = 54
+  Domain 4: centroid = 63.00, value = 0, length = 1
+  Domain 5: centroid = 68.50, value = 1, length = 10
+  Domain 6: centroid = 96.00, value = 0, length = 45
+  Domain 7: centroid = 119.00, value = 1, length = 1
+  Domain 8: centroid = 120.50, value = 0, length = 2
+  Domain 9: centroid = 122.00, value = 1, length = 1
+  Domain 10: centroid = 124.50, value = 0, length = 4
+  Domain 11: centroid = 127.00, value = 1, length = 1
+
+Row 13:
+  Domain 0: centroid = 0.00, value = 1, length = 1
+  Domain 1: centroid = 1.00, value = 0, length = 1
+  Domain 2: centroid = 4.50, value = 1, length = 6
+  Domain 3: centroid = 8.00, value = 0, length = 1
+  Domain 4: centroid = 38.50, value = 1, length = 60
+  Domain 5: centroid = 69.00, value = 0, length = 1
+  Domain 6: centroid = 71.00, value = 1, length = 3
+  Domain 7: centroid = 73.00, value = 0, length = 1
+  Domain 8: centroid = 74.00, value = 1, length = 1
+  Domain 9: centroid = 98.00, value = 0, length = 47
+  Domain 10: centroid = 122.00, value = 1, length = 1
+  Domain 11: centroid = 123.50, value = 0, length = 2
+  Domain 12: centroid = 125.00, value = 1, length = 1
+  Domain 13: centroid = 126.50, value = 0, length = 2
+
+Row 14:
+  Domain 0: centroid = 0.50, value = 0, length = 2
+  Domain 1: centroid = 2.00, value = 1, length = 1
+  Domain 2: centroid = 3.50, value = 0, length = 2
+  Domain 3: centroid = 35.00, value = 1, length = 61
+  Domain 4: centroid = 66.00, value = 0, length = 1
+  Domain 5: centroid = 67.00, value = 1, length = 1
+  Domain 6: centroid = 68.00, value = 0, length = 1
+  Domain 7: centroid = 70.50, value = 1, length = 4
+  Domain 8: centroid = 73.50, value = 0, length = 2
+  Domain 9: centroid = 76.00, value = 1, length = 3
+  Domain 10: centroid = 78.00, value = 0, length = 1
+  Domain 11: centroid = 79.00, value = 1, length = 1
+  Domain 12: centroid = 80.00, value = 0, length = 1
+  Domain 13: centroid = 81.00, value = 1, length = 1
+  Domain 14: centroid = 104.00, value = 0, length = 45
+  Domain 15: centroid = 127.00, value = 1, length = 1
+
+Row 15:
+  Domain 0: centroid = 127.50, value = 0, length = 4
+  Domain 1: centroid = 2.50, value = 1, length = 2
+  Domain 2: centroid = 4.50, value = 0, length = 2
+  Domain 3: centroid = 9.00, value = 1, length = 7
+  Domain 4: centroid = 13.00, value = 0, length = 1
+  Domain 5: centroid = 14.50, value = 1, length = 2
+  Domain 6: centroid = 16.00, value = 0, length = 1
+  Domain 7: centroid = 18.00, value = 1, length = 3
+  Domain 8: centroid = 20.00, value = 0, length = 1
+  Domain 9: centroid = 44.00, value = 1, length = 47
+  Domain 10: centroid = 68.00, value = 0, length = 1
+  Domain 11: centroid = 69.50, value = 1, length = 2
+  Domain 12: centroid = 71.00, value = 0, length = 1
+  Domain 13: centroid = 73.50, value = 1, length = 4
+  Domain 14: centroid = 78.50, value = 0, length = 6
+  Domain 15: centroid = 82.00, value = 1, length = 1
+  Domain 16: centroid = 83.00, value = 0, length = 1
+  Domain 17: centroid = 84.00, value = 1, length = 1
+  Domain 18: centroid = 85.00, value = 0, length = 1
+  Domain 19: centroid = 86.00, value = 1, length = 1
+  Domain 20: centroid = 88.50, value = 0, length = 4
+  Domain 21: centroid = 91.00, value = 1, length = 1
+  Domain 22: centroid = 108.00, value = 0, length = 33
+  Domain 23: centroid = 125.00, value = 1, length = 1
+
+Row 16:
+  Domain 0: centroid = 1.00, value = 0, length = 3
+  Domain 1: centroid = 3.00, value = 1, length = 1
+  Domain 2: centroid = 4.00, value = 0, length = 1
+  Domain 3: centroid = 36.00, value = 1, length = 63
+  Domain 4: centroid = 68.00, value = 0, length = 1
+  Domain 5: centroid = 70.50, value = 1, length = 4
+  Domain 6: centroid = 74.00, value = 0, length = 3
+  Domain 7: centroid = 76.50, value = 1, length = 2
+  Domain 8: centroid = 78.00, value = 0, length = 1
+  Domain 9: centroid = 79.00, value = 1, length = 1
+  Domain 10: centroid = 80.00, value = 0, length = 1
+  Domain 11: centroid = 81.00, value = 1, length = 1
+  Domain 12: centroid = 103.00, value = 0, length = 43
+  Domain 13: centroid = 126.00, value = 1, length = 3
+
+Row 17:
+  Domain 0: centroid = 0.50, value = 0, length = 2
+  Domain 1: centroid = 2.00, value = 1, length = 1
+  Domain 2: centroid = 3.50, value = 0, length = 2
+  Domain 3: centroid = 8.50, value = 1, length = 8
+  Domain 4: centroid = 13.00, value = 0, length = 1
+  Domain 5: centroid = 14.50, value = 1, length = 2
+  Domain 6: centroid = 16.00, value = 0, length = 1
+  Domain 7: centroid = 44.00, value = 1, length = 55
+  Domain 8: centroid = 72.00, value = 0, length = 1
+  Domain 9: centroid = 73.00, value = 1, length = 1
+  Domain 10: centroid = 74.00, value = 0, length = 1
+  Domain 11: centroid = 75.50, value = 1, length = 2
+  Domain 12: centroid = 77.50, value = 0, length = 2
+  Domain 13: centroid = 80.00, value = 1, length = 3
+  Domain 14: centroid = 104.00, value = 0, length = 45
+  Domain 15: centroid = 127.00, value = 1, length = 1
+
+Row 18:
+  Domain 0: centroid = 0.00, value = 1, length = 1
+  Domain 1: centroid = 4.00, value = 0, length = 7
+  Domain 2: centroid = 10.00, value = 1, length = 5
+  Domain 3: centroid = 13.00, value = 0, length = 1
+  Domain 4: centroid = 42.50, value = 1, length = 58
+  Domain 5: centroid = 72.00, value = 0, length = 1
+  Domain 6: centroid = 74.00, value = 1, length = 3
+  Domain 7: centroid = 76.00, value = 0, length = 1
+  Domain 8: centroid = 77.50, value = 1, length = 2
+  Domain 9: centroid = 79.00, value = 0, length = 1
+  Domain 10: centroid = 81.50, value = 1, length = 4
+  Domain 11: centroid = 105.50, value = 0, length = 44
+
+Row 19:
+  Domain 0: centroid = 0.00, value = 1, length = 1
+  Domain 1: centroid = 1.50, value = 0, length = 2
+  Domain 2: centroid = 3.00, value = 1, length = 1
+  Domain 3: centroid = 5.00, value = 0, length = 3
+  Domain 4: centroid = 36.50, value = 1, length = 60
+  Domain 5: centroid = 67.00, value = 0, length = 1
+  Domain 6: centroid = 68.00, value = 1, length = 1
+  Domain 7: centroid = 69.00, value = 0, length = 1
+  Domain 8: centroid = 71.50, value = 1, length = 4
+  Domain 9: centroid = 74.00, value = 0, length = 1
+  Domain 10: centroid = 75.00, value = 1, length = 1
+  Domain 11: centroid = 76.00, value = 0, length = 1
+  Domain 12: centroid = 77.00, value = 1, length = 1
+  Domain 13: centroid = 100.50, value = 0, length = 46
+  Domain 14: centroid = 124.00, value = 1, length = 1
+  Domain 15: centroid = 125.00, value = 0, length = 1
+  Domain 16: centroid = 126.00, value = 1, length = 1
+  Domain 17: centroid = 127.00, value = 0, length = 1
+
+Row 20:
+  Domain 0: centroid = 2.00, value = 0, length = 5
+  Domain 1: centroid = 36.50, value = 1, length = 64
+  Domain 2: centroid = 69.00, value = 0, length = 1
+  Domain 3: centroid = 70.00, value = 1, length = 1
+  Domain 4: centroid = 71.00, value = 0, length = 1
+  Domain 5: centroid = 72.00, value = 1, length = 1
+  Domain 6: centroid = 73.50, value = 0, length = 2
+  Domain 7: centroid = 75.00, value = 1, length = 1
+  Domain 8: centroid = 98.00, value = 0, length = 45
+  Domain 9: centroid = 121.00, value = 1, length = 1
+  Domain 10: centroid = 124.00, value = 0, length = 5
+  Domain 11: centroid = 127.00, value = 1, length = 1
+
+Row 21:
+  Domain 0: centroid = 0.00, value = 0, length = 5
+  Domain 1: centroid = 3.50, value = 1, length = 2
+  Domain 2: centroid = 6.00, value = 0, length = 3
+  Domain 3: centroid = 36.50, value = 1, length = 58
+  Domain 4: centroid = 66.00, value = 0, length = 1
+  Domain 5: centroid = 70.00, value = 1, length = 7
+  Domain 6: centroid = 74.00, value = 0, length = 1
+  Domain 7: centroid = 75.00, value = 1, length = 1
+  Domain 8: centroid = 76.00, value = 0, length = 1
+  Domain 9: centroid = 77.00, value = 1, length = 1
+  Domain 10: centroid = 101.00, value = 0, length = 47
+  Domain 11: centroid = 125.00, value = 1, length = 1
+
+Row 22:
+  Domain 0: centroid = 106.00, value = 0, length = 53
+  Domain 1: centroid = 5.00, value = 1, length = 1
+  Domain 2: centroid = 7.00, value = 0, length = 3
+  Domain 3: centroid = 15.00, value = 1, length = 13
+  Domain 4: centroid = 22.00, value = 0, length = 1
+  Domain 5: centroid = 51.00, value = 1, length = 57
+
+Row 23:
+  Domain 0: centroid = 119.50, value = 0, length = 42
+  Domain 1: centroid = 13.00, value = 1, length = 1
+  Domain 2: centroid = 14.00, value = 0, length = 1
+  Domain 3: centroid = 15.00, value = 1, length = 1
+  Domain 4: centroid = 17.00, value = 0, length = 3
+  Domain 5: centroid = 19.50, value = 1, length = 2
+  Domain 6: centroid = 21.00, value = 0, length = 1
+  Domain 7: centroid = 55.50, value = 1, length = 68
+  Domain 8: centroid = 93.50, value = 0, length = 8
+  Domain 9: centroid = 98.00, value = 1, length = 1
+
+Row 24:
+  Domain 0: centroid = 126.00, value = 0, length = 49
+  Domain 1: centroid = 55.00, value = 1, length = 65
+  Domain 2: centroid = 88.00, value = 0, length = 1
+  Domain 3: centroid = 89.00, value = 1, length = 1
+  Domain 4: centroid = 90.00, value = 0, length = 1
+  Domain 5: centroid = 92.00, value = 1, length = 3
+  Domain 6: centroid = 94.00, value = 0, length = 1
+  Domain 7: centroid = 95.00, value = 1, length = 1
+  Domain 8: centroid = 96.50, value = 0, length = 2
+  Domain 9: centroid = 98.00, value = 1, length = 1
+  Domain 10: centroid = 99.50, value = 0, length = 2
+  Domain 11: centroid = 101.00, value = 1, length = 1
+
+Row 25:
+  Domain 0: centroid = 126.50, value = 0, length = 50
+  Domain 1: centroid = 24.00, value = 1, length = 1
+  Domain 2: centroid = 25.50, value = 0, length = 2
+  Domain 3: centroid = 27.00, value = 1, length = 1
+  Domain 4: centroid = 28.00, value = 0, length = 1
+  Domain 5: centroid = 61.50, value = 1, length = 66
+  Domain 6: centroid = 95.00, value = 0, length = 1
+  Domain 7: centroid = 96.50, value = 1, length = 2
+  Domain 8: centroid = 98.50, value = 0, length = 2
+  Domain 9: centroid = 100.50, value = 1, length = 2
+
+Row 26:
+  Domain 0: centroid = 0.50, value = 0, length = 52
+  Domain 1: centroid = 27.50, value = 1, length = 2
+  Domain 2: centroid = 29.00, value = 0, length = 1
+  Domain 3: centroid = 63.50, value = 1, length = 68
+  Domain 4: centroid = 98.50, value = 0, length = 2
+  Domain 5: centroid = 100.00, value = 1, length = 1
+  Domain 6: centroid = 101.00, value = 0, length = 1
+  Domain 7: centroid = 102.00, value = 1, length = 1
+
+Row 27:
+  Domain 0: centroid = 126.50, value = 0, length = 50
+  Domain 1: centroid = 24.00, value = 1, length = 1
+  Domain 2: centroid = 25.00, value = 0, length = 1
+  Domain 3: centroid = 26.50, value = 1, length = 2
+  Domain 4: centroid = 28.00, value = 0, length = 1
+  Domain 5: centroid = 30.00, value = 1, length = 3
+  Domain 6: centroid = 32.50, value = 0, length = 2
+  Domain 7: centroid = 62.50, value = 1, length = 58
+  Domain 8: centroid = 92.00, value = 0, length = 1
+  Domain 9: centroid = 97.00, value = 1, length = 9
+
+Row 28:
+  Domain 0: centroid = 4.50, value = 0, length = 38
+  Domain 1: centroid = 24.00, value = 1, length = 1
+  Domain 2: centroid = 26.00, value = 0, length = 3
+  Domain 3: centroid = 28.00, value = 1, length = 1
+  Domain 4: centroid = 30.50, value = 0, length = 4
+  Domain 5: centroid = 33.00, value = 1, length = 1
+  Domain 6: centroid = 34.00, value = 0, length = 1
+  Domain 7: centroid = 35.00, value = 1, length = 1
+  Domain 8: centroid = 36.00, value = 0, length = 1
+  Domain 9: centroid = 70.00, value = 1, length = 67
+  Domain 10: centroid = 105.00, value = 0, length = 3
+  Domain 11: centroid = 107.00, value = 1, length = 1
+  Domain 12: centroid = 110.00, value = 0, length = 5
+  Domain 13: centroid = 113.00, value = 1, length = 1
+
+Row 29:
+  Domain 0: centroid = 16.50, value = 0, length = 42
+  Domain 1: centroid = 38.50, value = 1, length = 2
+  Domain 2: centroid = 40.00, value = 0, length = 1
+  Domain 3: centroid = 41.00, value = 1, length = 1
+  Domain 4: centroid = 42.00, value = 0, length = 1
+  Domain 5: centroid = 43.00, value = 1, length = 1
+  Domain 6: centroid = 44.00, value = 0, length = 1
+  Domain 7: centroid = 74.00, value = 1, length = 59
+  Domain 8: centroid = 104.00, value = 0, length = 1
+  Domain 9: centroid = 108.00, value = 1, length = 7
+  Domain 10: centroid = 114.00, value = 0, length = 5
+  Domain 11: centroid = 117.00, value = 1, length = 1
+  Domain 12: centroid = 120.00, value = 0, length = 5
+  Domain 13: centroid = 123.00, value = 1, length = 1
+
+Row 30:
+  Domain 0: centroid = 15.00, value = 0, length = 55
+  Domain 1: centroid = 43.00, value = 1, length = 1
+  Domain 2: centroid = 44.00, value = 0, length = 1
+  Domain 3: centroid = 45.00, value = 1, length = 1
+  Domain 4: centroid = 46.00, value = 0, length = 1
+  Domain 5: centroid = 81.00, value = 1, length = 69
+
+Row 31:
+  Domain 0: centroid = 3.50, value = 0, length = 34
+  Domain 1: centroid = 21.00, value = 1, length = 1
+  Domain 2: centroid = 23.00, value = 0, length = 3
+  Domain 3: centroid = 25.00, value = 1, length = 1
+  Domain 4: centroid = 28.50, value = 0, length = 6
+  Domain 5: centroid = 32.00, value = 1, length = 1
+  Domain 6: centroid = 33.00, value = 0, length = 1
+  Domain 7: centroid = 35.00, value = 1, length = 3
+  Domain 8: centroid = 37.00, value = 0, length = 1
+  Domain 9: centroid = 64.00, value = 1, length = 53
+  Domain 10: centroid = 91.00, value = 0, length = 1
+  Domain 11: centroid = 97.00, value = 1, length = 11
+  Domain 12: centroid = 103.00, value = 0, length = 1
+  Domain 13: centroid = 104.00, value = 1, length = 1
+  Domain 14: centroid = 109.00, value = 0, length = 9
+  Domain 15: centroid = 114.00, value = 1, length = 1
+
+Row 32:
+  Domain 0: centroid = 15.00, value = 0, length = 45
+  Domain 1: centroid = 38.00, value = 1, length = 1
+  Domain 2: centroid = 40.50, value = 0, length = 4
+  Domain 3: centroid = 43.50, value = 1, length = 2
+  Domain 4: centroid = 45.50, value = 0, length = 2
+  Domain 5: centroid = 47.50, value = 1, length = 2
+  Domain 6: centroid = 49.00, value = 0, length = 1
+  Domain 7: centroid = 50.00, value = 1, length = 1
+  Domain 8: centroid = 51.00, value = 0, length = 1
+  Domain 9: centroid = 83.00, value = 1, length = 63
+  Domain 10: centroid = 115.00, value = 0, length = 1
+  Domain 11: centroid = 116.00, value = 1, length = 1
+  Domain 12: centroid = 118.00, value = 0, length = 3
+  Domain 13: centroid = 120.00, value = 1, length = 1
+
+Row 33:
+  Domain 0: centroid = 19.00, value = 0, length = 45
+  Domain 1: centroid = 42.00, value = 1, length = 1
+  Domain 2: centroid = 43.00, value = 0, length = 1
+  Domain 3: centroid = 44.00, value = 1, length = 1
+  Domain 4: centroid = 45.00, value = 0, length = 1
+  Domain 5: centroid = 46.50, value = 1, length = 2
+  Domain 6: centroid = 48.50, value = 0, length = 2
+  Domain 7: centroid = 78.00, value = 1, length = 57
+  Domain 8: centroid = 107.00, value = 0, length = 1
+  Domain 9: centroid = 108.50, value = 1, length = 2
+  Domain 10: centroid = 110.00, value = 0, length = 1
+  Domain 11: centroid = 112.00, value = 1, length = 3
+  Domain 12: centroid = 114.00, value = 0, length = 1
+  Domain 13: centroid = 115.00, value = 1, length = 1
+  Domain 14: centroid = 116.00, value = 0, length = 1
+  Domain 15: centroid = 117.50, value = 1, length = 2
+  Domain 16: centroid = 119.00, value = 0, length = 1
+  Domain 17: centroid = 120.00, value = 1, length = 1
+  Domain 18: centroid = 121.50, value = 0, length = 2
+  Domain 19: centroid = 123.50, value = 1, length = 2
+
+Row 34:
+  Domain 0: centroid = 1.50, value = 0, length = 50
+  Domain 1: centroid = 28.00, value = 1, length = 3
+  Domain 2: centroid = 30.50, value = 0, length = 2
+  Domain 3: centroid = 63.00, value = 1, length = 63
+  Domain 4: centroid = 95.00, value = 0, length = 1
+  Domain 5: centroid = 97.00, value = 1, length = 3
+  Domain 6: centroid = 99.50, value = 0, length = 2
+  Domain 7: centroid = 102.50, value = 1, length = 4
+
+Row 35:
+  Domain 0: centroid = 113.50, value = 0, length = 48
+  Domain 1: centroid = 10.50, value = 1, length = 2
+  Domain 2: centroid = 12.50, value = 0, length = 2
+  Domain 3: centroid = 16.00, value = 1, length = 5
+  Domain 4: centroid = 19.00, value = 0, length = 1
+  Domain 5: centroid = 20.00, value = 1, length = 1
+  Domain 6: centroid = 21.00, value = 0, length = 1
+  Domain 7: centroid = 53.50, value = 1, length = 64
+  Domain 8: centroid = 86.00, value = 0, length = 1
+  Domain 9: centroid = 87.00, value = 1, length = 1
+  Domain 10: centroid = 88.00, value = 0, length = 1
+  Domain 11: centroid = 89.00, value = 1, length = 1
+
+Row 36:
+  Domain 0: centroid = 114.00, value = 0, length = 53
+  Domain 1: centroid = 14.50, value = 1, length = 4
+  Domain 2: centroid = 17.00, value = 0, length = 1
+  Domain 3: centroid = 50.50, value = 1, length = 66
+  Domain 4: centroid = 85.00, value = 0, length = 3
+  Domain 5: centroid = 87.00, value = 1, length = 1
+
+Row 37:
+  Domain 0: centroid = 111.00, value = 0, length = 47
+  Domain 1: centroid = 7.00, value = 1, length = 1
+  Domain 2: centroid = 8.00, value = 0, length = 1
+  Domain 3: centroid = 9.50, value = 1, length = 2
+  Domain 4: centroid = 11.50, value = 0, length = 2
+  Domain 5: centroid = 47.00, value = 1, length = 69
+  Domain 6: centroid = 82.00, value = 0, length = 1
+  Domain 7: centroid = 83.00, value = 1, length = 1
+  Domain 8: centroid = 85.00, value = 0, length = 3
+  Domain 9: centroid = 87.00, value = 1, length = 1
+
+Row 38:
+  Domain 0: centroid = 117.50, value = 0, length = 52
+  Domain 1: centroid = 17.50, value = 1, length = 4
+  Domain 2: centroid = 20.00, value = 0, length = 1
+  Domain 3: centroid = 22.00, value = 1, length = 3
+  Domain 4: centroid = 24.00, value = 0, length = 1
+  Domain 5: centroid = 55.50, value = 1, length = 62
+  Domain 6: centroid = 87.50, value = 0, length = 2
+  Domain 7: centroid = 90.00, value = 1, length = 3
+
+Row 39:
+  Domain 0: centroid = 115.00, value = 0, length = 45
+  Domain 1: centroid = 10.00, value = 1, length = 1
+  Domain 2: centroid = 14.00, value = 0, length = 7
+  Domain 3: centroid = 19.00, value = 1, length = 3
+  Domain 4: centroid = 21.00, value = 0, length = 1
+  Domain 5: centroid = 23.00, value = 1, length = 3
+  Domain 6: centroid = 25.00, value = 0, length = 1
+  Domain 7: centroid = 55.50, value = 1, length = 60
+  Domain 8: centroid = 86.00, value = 0, length = 1
+  Domain 9: centroid = 87.00, value = 1, length = 1
+  Domain 10: centroid = 88.00, value = 0, length = 1
+  Domain 11: centroid = 89.50, value = 1, length = 2
+  Domain 12: centroid = 91.00, value = 0, length = 1
+  Domain 13: centroid = 92.00, value = 1, length = 1
+
+Row 40:
+  Domain 0: centroid = 125.50, value = 0, length = 46
+  Domain 1: centroid = 21.00, value = 1, length = 1
+  Domain 2: centroid = 23.00, value = 0, length = 3
+  Domain 3: centroid = 59.50, value = 1, length = 70
+  Domain 4: centroid = 95.00, value = 0, length = 1
+  Domain 5: centroid = 96.00, value = 1, length = 1
+  Domain 6: centroid = 99.00, value = 0, length = 5
+  Domain 7: centroid = 102.00, value = 1, length = 1
+
+Row 41:
+  Domain 0: centroid = 118.00, value = 0, length = 49
+  Domain 1: centroid = 15.50, value = 1, length = 2
+  Domain 2: centroid = 18.00, value = 0, length = 3
+  Domain 3: centroid = 54.50, value = 1, length = 70
+  Domain 4: centroid = 91.00, value = 0, length = 3
+  Domain 5: centroid = 93.00, value = 1, length = 1
+
+Row 42:
+  Domain 0: centroid = 116.00, value = 0, length = 45
+  Domain 1: centroid = 11.00, value = 1, length = 1
+  Domain 2: centroid = 12.00, value = 0, length = 1
+  Domain 3: centroid = 13.00, value = 1, length = 1
+  Domain 4: centroid = 14.00, value = 0, length = 1
+  Domain 5: centroid = 17.00, value = 1, length = 5
+  Domain 6: centroid = 20.00, value = 0, length = 1
+  Domain 7: centroid = 55.00, value = 1, length = 69
+  Domain 8: centroid = 90.00, value = 0, length = 1
+  Domain 9: centroid = 92.00, value = 1, length = 3
+
+Row 43:
+  Domain 0: centroid = 119.00, value = 0, length = 49
+  Domain 1: centroid = 16.00, value = 1, length = 1
+  Domain 2: centroid = 17.00, value = 0, length = 1
+  Domain 3: centroid = 18.50, value = 1, length = 2
+  Domain 4: centroid = 20.50, value = 0, length = 2
+  Domain 5: centroid = 24.50, value = 1, length = 6
+  Domain 6: centroid = 28.00, value = 0, length = 1
+  Domain 7: centroid = 58.00, value = 1, length = 59
+  Domain 8: centroid = 88.00, value = 0, length = 1
+  Domain 9: centroid = 89.50, value = 1, length = 2
+  Domain 10: centroid = 92.00, value = 0, length = 3
+  Domain 11: centroid = 94.00, value = 1, length = 1
+
+Row 44:
+  Domain 0: centroid = 122.00, value = 0, length = 39
+  Domain 1: centroid = 14.00, value = 1, length = 1
+  Domain 2: centroid = 15.00, value = 0, length = 1
+  Domain 3: centroid = 16.50, value = 1, length = 2
+  Domain 4: centroid = 20.00, value = 0, length = 5
+  Domain 5: centroid = 25.00, value = 1, length = 5
+  Domain 6: centroid = 28.00, value = 0, length = 1
+  Domain 7: centroid = 59.00, value = 1, length = 61
+  Domain 8: centroid = 91.50, value = 0, length = 4
+  Domain 9: centroid = 94.50, value = 1, length = 2
+  Domain 10: centroid = 98.50, value = 0, length = 6
+  Domain 11: centroid = 102.00, value = 1, length = 1
+
+Row 45:
+  Domain 0: centroid = 18.00, value = 0, length = 43
+  Domain 1: centroid = 40.00, value = 1, length = 1
+  Domain 2: centroid = 41.00, value = 0, length = 1
+  Domain 3: centroid = 71.00, value = 1, length = 59
+  Domain 4: centroid = 101.00, value = 0, length = 1
+  Domain 5: centroid = 102.50, value = 1, length = 2
+  Domain 6: centroid = 104.00, value = 0, length = 1
+  Domain 7: centroid = 108.00, value = 1, length = 7
+  Domain 8: centroid = 112.00, value = 0, length = 1
+  Domain 9: centroid = 113.50, value = 1, length = 2
+  Domain 10: centroid = 117.00, value = 0, length = 5
+  Domain 11: centroid = 120.00, value = 1, length = 1
+  Domain 12: centroid = 121.50, value = 0, length = 2
+  Domain 13: centroid = 123.50, value = 1, length = 2
+
+Row 46:
+  Domain 0: centroid = 10.50, value = 0, length = 38
+  Domain 1: centroid = 30.00, value = 1, length = 1
+  Domain 2: centroid = 32.00, value = 0, length = 3
+  Domain 3: centroid = 34.00, value = 1, length = 1
+  Domain 4: centroid = 37.50, value = 0, length = 6
+  Domain 5: centroid = 41.00, value = 1, length = 1
+  Domain 6: centroid = 42.00, value = 0, length = 1
+  Domain 7: centroid = 74.50, value = 1, length = 64
+  Domain 8: centroid = 107.00, value = 0, length = 1
+  Domain 9: centroid = 109.00, value = 1, length = 3
+  Domain 10: centroid = 113.50, value = 0, length = 6
+  Domain 11: centroid = 117.00, value = 1, length = 1
+  Domain 12: centroid = 118.00, value = 0, length = 1
+  Domain 13: centroid = 119.00, value = 1, length = 1
+
+Row 47:
+  Domain 0: centroid = 7.00, value = 0, length = 47
+  Domain 1: centroid = 31.00, value = 1, length = 1
+  Domain 2: centroid = 34.00, value = 0, length = 5
+  Domain 3: centroid = 70.00, value = 1, length = 67
+  Domain 4: centroid = 104.50, value = 0, length = 2
+  Domain 5: centroid = 106.50, value = 1, length = 2
+  Domain 6: centroid = 108.00, value = 0, length = 1
+  Domain 7: centroid = 109.00, value = 1, length = 1
+  Domain 8: centroid = 110.00, value = 0, length = 1
+  Domain 9: centroid = 111.00, value = 1, length = 1
+
+Row 48:
+  Domain 0: centroid = 116.00, value = 0, length = 43
+  Domain 1: centroid = 10.50, value = 1, length = 2
+  Domain 2: centroid = 13.00, value = 0, length = 3
+  Domain 3: centroid = 46.00, value = 1, length = 63
+  Domain 4: centroid = 78.50, value = 0, length = 2
+  Domain 5: centroid = 81.50, value = 1, length = 4
+  Domain 6: centroid = 84.00, value = 0, length = 1
+  Domain 7: centroid = 85.50, value = 1, length = 2
+  Domain 8: centroid = 87.00, value = 0, length = 1
+  Domain 9: centroid = 88.00, value = 1, length = 1
+  Domain 10: centroid = 89.00, value = 0, length = 1
+  Domain 11: centroid = 92.00, value = 1, length = 5
+
+Row 49:
+  Domain 0: centroid = 105.50, value = 0, length = 46
+  Domain 1: centroid = 1.00, value = 1, length = 1
+  Domain 2: centroid = 2.00, value = 0, length = 1
+  Domain 3: centroid = 3.50, value = 1, length = 2
+  Domain 4: centroid = 5.00, value = 0, length = 1
+  Domain 5: centroid = 8.00, value = 1, length = 5
+  Domain 6: centroid = 11.00, value = 0, length = 1
+  Domain 7: centroid = 39.50, value = 1, length = 56
+  Domain 8: centroid = 68.00, value = 0, length = 1
+  Domain 9: centroid = 70.00, value = 1, length = 3
+  Domain 10: centroid = 72.00, value = 0, length = 1
+  Domain 11: centroid = 74.50, value = 1, length = 4
+  Domain 12: centroid = 77.00, value = 0, length = 1
+  Domain 13: centroid = 78.50, value = 1, length = 2
+  Domain 14: centroid = 80.50, value = 0, length = 2
+  Domain 15: centroid = 82.00, value = 1, length = 1
+
+Row 50:
+  Domain 0: centroid = 127.50, value = 1, length = 2
+  Domain 1: centroid = 1.00, value = 0, length = 1
+  Domain 2: centroid = 34.00, value = 1, length = 65
+  Domain 3: centroid = 67.00, value = 0, length = 1
+  Domain 4: centroid = 68.00, value = 1, length = 1
+  Domain 5: centroid = 69.50, value = 0, length = 2
+  Domain 6: centroid = 71.50, value = 1, length = 2
+  Domain 7: centroid = 73.00, value = 0, length = 1
+  Domain 8: centroid = 74.50, value = 1, length = 2
+  Domain 9: centroid = 97.50, value = 0, length = 44
+  Domain 10: centroid = 120.00, value = 1, length = 1
+  Domain 11: centroid = 122.00, value = 0, length = 3
+  Domain 12: centroid = 124.00, value = 1, length = 1
+  Domain 13: centroid = 125.50, value = 0, length = 2
+
+Row 51:
+  Domain 0: centroid = 127.50, value = 1, length = 4
+  Domain 1: centroid = 2.00, value = 0, length = 1
+  Domain 2: centroid = 29.50, value = 1, length = 54
+  Domain 3: centroid = 57.00, value = 0, length = 1
+  Domain 4: centroid = 61.00, value = 1, length = 7
+  Domain 5: centroid = 65.00, value = 0, length = 1
+  Domain 6: centroid = 66.00, value = 1, length = 1
+  Domain 7: centroid = 67.00, value = 0, length = 1
+  Domain 8: centroid = 68.00, value = 1, length = 1
+  Domain 9: centroid = 76.00, value = 0, length = 15
+  Domain 10: centroid = 84.00, value = 1, length = 1
+  Domain 11: centroid = 101.00, value = 0, length = 33
+  Domain 12: centroid = 118.00, value = 1, length = 1
+  Domain 13: centroid = 119.00, value = 0, length = 1
+  Domain 14: centroid = 120.00, value = 1, length = 1
+  Domain 15: centroid = 121.00, value = 0, length = 1
+  Domain 16: centroid = 123.00, value = 1, length = 3
+  Domain 17: centroid = 125.00, value = 0, length = 1
+
+Row 52:
+  Domain 0: centroid = 26.00, value = 1, length = 67
+  Domain 1: centroid = 60.00, value = 0, length = 1
+  Domain 2: centroid = 61.00, value = 1, length = 1
+  Domain 3: centroid = 63.00, value = 0, length = 3
+  Domain 4: centroid = 65.00, value = 1, length = 1
+  Domain 5: centroid = 67.50, value = 0, length = 4
+  Domain 6: centroid = 70.50, value = 1, length = 2
+  Domain 7: centroid = 89.50, value = 0, length = 36
+  Domain 8: centroid = 108.50, value = 1, length = 2
+  Domain 9: centroid = 112.50, value = 0, length = 6
+  Domain 10: centroid = 116.00, value = 1, length = 1
+  Domain 11: centroid = 117.50, value = 0, length = 2
+  Domain 12: centroid = 119.00, value = 1, length = 1
+  Domain 13: centroid = 120.00, value = 0, length = 1
+
+Row 53:
+  Domain 0: centroid = 0.00, value = 1, length = 1
+  Domain 1: centroid = 1.50, value = 0, length = 2
+  Domain 2: centroid = 3.00, value = 1, length = 1
+  Domain 3: centroid = 4.50, value = 0, length = 2
+  Domain 4: centroid = 6.50, value = 1, length = 2
+  Domain 5: centroid = 8.00, value = 0, length = 1
+  Domain 6: centroid = 37.50, value = 1, length = 58
+  Domain 7: centroid = 68.50, value = 0, length = 4
+  Domain 8: centroid = 72.50, value = 1, length = 4
+  Domain 9: centroid = 76.00, value = 0, length = 3
+  Domain 10: centroid = 78.50, value = 1, length = 2
+  Domain 11: centroid = 103.50, value = 0, length = 48
+
+Row 54:
+  Domain 0: centroid = 104.00, value = 0, length = 49
+  Domain 1: centroid = 1.50, value = 1, length = 2
+  Domain 2: centroid = 4.50, value = 0, length = 4
+  Domain 3: centroid = 7.50, value = 1, length = 2
+  Domain 4: centroid = 9.00, value = 0, length = 1
+  Domain 5: centroid = 10.00, value = 1, length = 1
+  Domain 6: centroid = 11.00, value = 0, length = 1
+  Domain 7: centroid = 12.00, value = 1, length = 1
+  Domain 8: centroid = 13.00, value = 0, length = 1
+  Domain 9: centroid = 44.00, value = 1, length = 61
+  Domain 10: centroid = 75.00, value = 0, length = 1
+  Domain 11: centroid = 76.00, value = 1, length = 1
+  Domain 12: centroid = 77.50, value = 0, length = 2
+  Domain 13: centroid = 79.00, value = 1, length = 1
+
+Row 55:
+  Domain 0: centroid = 0.00, value = 0, length = 1
+  Domain 1: centroid = 1.50, value = 1, length = 2
+  Domain 2: centroid = 4.50, value = 0, length = 4
+  Domain 3: centroid = 37.00, value = 1, length = 61
+  Domain 4: centroid = 68.00, value = 0, length = 1
+  Domain 5: centroid = 70.50, value = 1, length = 4
+  Domain 6: centroid = 73.00, value = 0, length = 1
+  Domain 7: centroid = 74.00, value = 1, length = 1
+  Domain 8: centroid = 75.00, value = 0, length = 1
+  Domain 9: centroid = 76.00, value = 1, length = 1
+  Domain 10: centroid = 77.00, value = 0, length = 1
+  Domain 11: centroid = 78.50, value = 1, length = 2
+  Domain 12: centroid = 81.00, value = 0, length = 3
+  Domain 13: centroid = 83.00, value = 1, length = 1
+  Domain 14: centroid = 105.00, value = 0, length = 43
+  Domain 15: centroid = 127.00, value = 1, length = 1
+
+Row 56:
+  Domain 0: centroid = 109.50, value = 0, length = 44
+  Domain 1: centroid = 4.00, value = 1, length = 1
+  Domain 2: centroid = 7.50, value = 0, length = 6
+  Domain 3: centroid = 43.50, value = 1, length = 66
+  Domain 4: centroid = 77.00, value = 0, length = 1
+  Domain 5: centroid = 79.50, value = 1, length = 4
+  Domain 6: centroid = 84.00, value = 0, length = 5
+  Domain 7: centroid = 87.00, value = 1, length = 1
+
+Row 57:
+  Domain 0: centroid = 2.00, value = 0, length = 5
+  Domain 1: centroid = 5.00, value = 1, length = 1
+  Domain 2: centroid = 6.50, value = 0, length = 2
+  Domain 3: centroid = 9.50, value = 1, length = 4
+  Domain 4: centroid = 12.50, value = 0, length = 2
+  Domain 5: centroid = 41.50, value = 1, length = 56
+  Domain 6: centroid = 70.00, value = 0, length = 1
+  Domain 7: centroid = 72.50, value = 1, length = 4
+  Domain 8: centroid = 75.00, value = 0, length = 1
+  Domain 9: centroid = 77.00, value = 1, length = 3
+  Domain 10: centroid = 79.00, value = 0, length = 1
+  Domain 11: centroid = 80.00, value = 1, length = 1
+  Domain 12: centroid = 81.50, value = 0, length = 2
+  Domain 13: centroid = 83.00, value = 1, length = 1
+  Domain 14: centroid = 105.00, value = 0, length = 43
+  Domain 15: centroid = 127.00, value = 1, length = 1
+
+Row 58:
+  Domain 0: centroid = 110.00, value = 0, length = 49
+  Domain 1: centroid = 7.50, value = 1, length = 2
+  Domain 2: centroid = 11.50, value = 0, length = 6
+  Domain 3: centroid = 18.50, value = 1, length = 8
+  Domain 4: centroid = 23.00, value = 0, length = 1
+  Domain 5: centroid = 50.00, value = 1, length = 53
+  Domain 6: centroid = 77.00, value = 0, length = 1
+  Domain 7: centroid = 78.50, value = 1, length = 2
+  Domain 8: centroid = 80.50, value = 0, length = 2
+  Domain 9: centroid = 83.50, value = 1, length = 4
+
+Row 59:
+  Domain 0: centroid = 107.00, value = 0, length = 47
+  Domain 1: centroid = 3.00, value = 1, length = 1
+  Domain 2: centroid = 5.50, value = 0, length = 4
+  Domain 3: centroid = 8.00, value = 1, length = 1
+  Domain 4: centroid = 9.00, value = 0, length = 1
+  Domain 5: centroid = 10.50, value = 1, length = 2
+  Domain 6: centroid = 12.00, value = 0, length = 1
+  Domain 7: centroid = 13.00, value = 1, length = 1
+  Domain 8: centroid = 14.50, value = 0, length = 2
+  Domain 9: centroid = 16.00, value = 1, length = 1
+  Domain 10: centroid = 17.00, value = 0, length = 1
+  Domain 11: centroid = 45.00, value = 1, length = 55
+  Domain 12: centroid = 73.00, value = 0, length = 1
+  Domain 13: centroid = 77.50, value = 1, length = 8
+  Domain 14: centroid = 82.00, value = 0, length = 1
+  Domain 15: centroid = 83.00, value = 1, length = 1
+
+Row 60:
+  Domain 0: centroid = 120.50, value = 0, length = 44
+  Domain 1: centroid = 15.00, value = 1, length = 1
+  Domain 2: centroid = 17.00, value = 0, length = 3
+  Domain 3: centroid = 20.00, value = 1, length = 3
+  Domain 4: centroid = 22.50, value = 0, length = 2
+  Domain 5: centroid = 24.50, value = 1, length = 2
+  Domain 6: centroid = 26.00, value = 0, length = 1
+  Domain 7: centroid = 49.50, value = 1, length = 46
+  Domain 8: centroid = 73.00, value = 0, length = 1
+  Domain 9: centroid = 79.50, value = 1, length = 12
+  Domain 10: centroid = 86.50, value = 0, length = 2
+  Domain 11: centroid = 89.00, value = 1, length = 3
+  Domain 12: centroid = 91.00, value = 0, length = 1
+  Domain 13: centroid = 92.50, value = 1, length = 2
+  Domain 14: centroid = 95.00, value = 0, length = 3
+  Domain 15: centroid = 97.50, value = 1, length = 2
+
+Row 61:
+  Domain 0: centroid = 124.00, value = 0, length = 49
+  Domain 1: centroid = 21.00, value = 1, length = 1
+  Domain 2: centroid = 22.50, value = 0, length = 2
+  Domain 3: centroid = 24.00, value = 1, length = 1
+  Domain 4: centroid = 25.00, value = 0, length = 1
+  Domain 5: centroid = 26.50, value = 1, length = 2
+  Domain 6: centroid = 28.00, value = 0, length = 1
+  Domain 7: centroid = 60.50, value = 1, length = 64
+  Domain 8: centroid = 93.00, value = 0, length = 1
+  Domain 9: centroid = 94.00, value = 1, length = 1
+  Domain 10: centroid = 96.50, value = 0, length = 4
+  Domain 11: centroid = 99.00, value = 1, length = 1
+
+Row 62:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 63:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 64:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 65:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 66:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 67:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 68:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 69:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 70:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 71:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 72:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 73:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 74:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 75:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 76:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 77:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 78:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+
+Row 79:
+  Domain 0: centroid = 124.00, value = 0, length = 57
+  Domain 1: centroid = 60.00, value = 1, length = 71
+

@@ -8,12 +8,11 @@
 #include <omp.h>
 using namespace std;
 
-//pararelizar
-//en el nuevo test no esta metido los rangos mas elegantes
 
-unsigned int n = 50;
-unsigned int R = 10;
-unsigned int Rg=0;
+
+unsigned int n = 100;
+unsigned int R = 20;
+unsigned int Rg=1;
 const int t_max = 10000; // Tiempo
 const double alphadif = 1.0; // Probablidad de difusión
 const double alphareac = 0.0000000001;

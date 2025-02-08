@@ -1,5 +1,4 @@
-//Nuevo test modelando dinamicas como en el programa de joaquin
-
+//Programa completo enfocado en el estudio de temperaturas
 
 #include<stdio.h>
 #include<vector>
@@ -10,13 +9,13 @@
 #include <omp.h>
 using namespace std;
 
-double pp = 0.999;
+double pp = 1.0;
 
-unsigned int n = 100;
-unsigned int R = 5;
+unsigned int n = 128;
+unsigned int R = 4;
 unsigned int Rg=0;
-const int t_max = 10000; // Tiempo
-const double alphadif = 1.0; // Probablidad de difusión
+const int t_max = 5000; // Tiempo
+const double alphadif = 1.0; // Probablidad de difusión 
 const double alphareac = 0.5;
 float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f,2.0f,5.0f,9.0f,10.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
@@ -229,9 +228,20 @@ int main(){
         fclose(flips_data);
         //fprintf(stdout,"\nT=%.1f  ex=%i  sf=%i  thread=%i",temperature,d,count,omp_get_thread_num());
         fprintf(stdout, "\nT=%.1f  ex=%i  sf=%i", temperature, d, count);
+        //Comprobar que se mantiene la magneticazión, kawasaki solo;
+            if (Rg==0){
+                double sumf = 0;
+                for (unsigned int i = 0; i < n; i++)
+                {
+                    sumf += ring[i];
+                }
+                if(sumf!=sum){
+                    fprintf(stdout, "Conservación magnetización violada; T=%.2f, %f!=%f",temperature, sum/n, sumf/n);    
+                }
+            }
     }
     auto end = std::chrono::system_clock::now();
-    fprintf(stdout, "\nExec time: %d s", chrono::duration_cast<std::chrono::seconds>(end - start).count());
+    fprintf(stdout, "\nExec time: %llu s", chrono::duration_cast<std::chrono::seconds>(end - start).count());
 }
 
 

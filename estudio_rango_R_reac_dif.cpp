@@ -67,7 +67,7 @@ int main()
         fprintf(stdout,"\n");
     }*/
 
-    FILE *r_data = fopen("./ising_data_R_low_temp_reac_dif/r_data.dat", "w");
+    FILE *r_data = fopen("./ising_data/reac_dif_T0/r_data.dat", "w");
     
     fprintf(stdout, "%i", r_size);
     for (unsigned i = 0; i < r_size; i++)
@@ -102,7 +102,7 @@ int main()
         double length_tm1=0;
         int frozentime=0;
 
-        sprintf(filename, "./ising_data_R_low_temp_reac_dif/ising_dataR%i.dat", R); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data/reac_dif_T0/raw/ising_dataR%i.dat", R); // si no funciona %i probar %d
         
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)

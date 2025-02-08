@@ -1,8 +1,45 @@
-//Nuevo test modelando dinamicas como en el programa de joaquin
+// Comprobar thread safety (chatgpt dice que puede haber problemas)
+// En la dinamica glauber hay problemas de contorno, ver C:\Users\Ale\Desktop\UGR FISICA\TFG\TFG_things\ising_data\glaub_T0\raw\ising_dataR12.dat
+//Comprobar por qué están y si están también afectando esta dinámica. De todas formas la dinamica glauber pura
+//no parece muy interesante para este tipo de analisis, quizás probando con un dominio central y con magnetización 0?
+// Hacer figura con visualización clara del procesamiento de datos
+// Comprobar como se comoportan el analisis cuando se unen los dominios
+// Comprobar con 4 dominios
+// Analizar y entender el dbscan
+// para el fihero de centroids, quiero que compruebe cada 100 pasos que el número de centroids no ha cambiado, si cambia hay un
+// merge, y ya no podemos trackear el úlitmo paso (number changes) de la misma manera
+// Juntar todo el la nueva arquitectura de carpetas y hacer un pipeline directo para no tener que correr 5 archivos, aunque para
+//archivos individulaes solamente, imposible correr carpetas. Hacer el programa de forma que se meta en la carpeta correcta.
+// Poner todo en una figura de gnuplot que analice el proceso en casos concretos:
+/*
+-Quimera normal, estática
+-4 quimeras que se mueve
+-Quimeras que se juntan
+-Aparecerán más casos con la dinamica de glauber y reac dif, pero con esos ya le puedo presentar a joaquin y hacer figuras buenas.
+*/
 
-//19/11: Estudio para ver el exponente del tamaño de los dominios a baja temperatura.
-//Solo difusión, le damos 1000 pasos MC y sustituyo la estructura de temperaturas por una estructura de R.
-//Voy a intentar sacar un mean domain length al final de los 1000 pasos 
+/*PIPELINE ACTUAL. COMPROBADO CON R_low_temp/R40.dat:
+corres aquí, aunque esto va para la nueva arquitectura de ficheros
+Promedio temporal: reduced matrix en compute.cpp
+Clusters y centroids: test_process.py
+Cambios y cuantificación quimeras: displaced_number_changes.py
+
+*/
+/*La úlitma figura no me la est*/
+
+/*Viernes: 
+1)comprobar condiciones de contorno y thread safety---> ultimo paso chatgpt solo para este fichero. si funciona comprobar en glauber
+Tambíen, sugerencia chatgpt, modifico hg en el fichero glauber
+2)Figura gnuplot con R39 o 40, el que mejor se vea y mandar correo. listo
+3)Subir ficheros nuevos
+*/
+
+
+/*
+Lunes:
+1) Construir pipeline con las nuevas carpetas
+*/
+
 
 #include<stdio.h>
 #include<vector>
@@ -16,23 +53,20 @@ using namespace std;
 
 double pp = 1;
 
-unsigned int n =64;
+unsigned int n =512;
 unsigned int Rg=0;
-const int t_max = 500; // Tiempo
-
-float temperature=0.001f;
-long long unsigned int r_size=40;
+const int t_max = 10000; // Tiempo
+unsigned int R_init=30;
+long long unsigned int r_size=10;
 
 vector<unsigned int>R_vals(r_size,0);
  
 vector<int>init_ring(n,0);
 
 
-vector<int> hg(n, 0);    // campo dinamica glauber
 
 unsigned seed1 = 1944243;   // semilla generador de números aleatorios
 mt19937_64 generator(seed1); // generador  mt19937_64
-
 //random_device{}(); para generar numeros realmente aleatorios que paso como semillas
 //Como están los threads es lo más correcto porque cada simulación llega exactamente a la misma secuencia del 
 //generador de numeros pseudoaleatorios.
@@ -41,6 +75,7 @@ mt19937_64 generator(seed1); // generador  mt19937_64
 void initialize();
 double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk);
 void campoglaub(vector<int> &ring, vector<vector<int>> &matg);
+void initialize_dominio_central(int ancho);
 double mdl(vector<int> &ring);
 
 int main()
@@ -56,7 +91,7 @@ int main()
     {
         sum += init_ring[i];
     }
-    fprintf(stdout, " \n Magnetizacion inicial: %.4f\n", sum/n);
+    fprintf(stdout, " \n Magnetizacion inicial: %.4f.\n Size: %i", sum/n,n);
     /*
     for (unsigned int i = 0; i < n; i++)
     {
@@ -68,18 +103,18 @@ int main()
         fprintf(stdout,"\n");
     }*/
 
-    FILE *r_data = fopen("./ising_data_R_low_temp/r_data.dat", "w");
+    FILE *r_data = fopen("./ising_data/kawa_T0/r_data.dat", "w");
     
-    fprintf(stdout, "%llu", r_size);
+    fprintf(stdout, "\nR_size= %llu", r_size);
     for (unsigned i = 0; i < r_size; i++)
     {
-        R_vals[i] = i + 1;
+        R_vals[i] = R_init+i + 1;
     }
 
     char filename[256]; // Restringido a 42 caracteres, entonces solo caben en el nombre de R hasta 100.
     unsigned int R;
 
-    #pragma omp parallel for shared(R_vals ,init_ring, seed1) private(generator, filename, R)
+    #pragma omp parallel for shared(R_vals ,init_ring, seed1) private(filename, R)
     for (unsigned r_iter = 0; r_iter < r_size; r_iter++){
         R = R_vals[r_iter];
         vector<vector<int>> matk(n, vector<int>(n, 0)); // matriz de conectividad
@@ -103,7 +138,7 @@ int main()
         double length_tm1=0;
         int frozentime=0;
 
-        sprintf(filename, "./ising_data_R_low_temp/ising_dataR%i.dat", R); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data/kawa_T0/raw/ising_dataR%i.dat", R); // si no funciona %i probar %d
         
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)
@@ -111,6 +146,10 @@ int main()
             perror("Error opening file: "); // Esto se asegura de que si hay algun error en la temperatura pase a la siguiente.
             r_iter++;
         }
+
+
+        //Thread-safe rnadonm number generator
+        mt19937_64 local_generator(seed1 + omp_get_thread_num() + r_iter);
 
         uniform_int_distribution<unsigned int> i_distribution(0, n - 1); // Distribución random para los i
         uniform_real_distribution<double> r_distribution(0., 1.);        // initialize the distribution r_distribution
@@ -136,9 +175,8 @@ int main()
         bool inR=false;
         //bool inRg=false;
         //int t_lim=t_max;
-        int t_lim=t_max;
-        int tries=0;
-        int max_tries=10;
+        int t_lim=1000;
+        
 
         for (t = 0; t < t_lim; t++) // va en pasos Monte Carlo de n intentos de intercambio de posición o de spin flip
         {
@@ -185,7 +223,7 @@ int main()
                              
                 //double xr= r_distribution(generator);
                 double delta=campokawa(i1,i2,ring,matk);
-                if((inR)&(delta<=0))
+                if((inR)&&(delta<=0))
                 {
                     swap(frozenring[i1], frozenring[i2]);
                 }
@@ -238,9 +276,8 @@ int main()
             length_t = mdl(ring);
             if(length_t!=length_tm1){length_tm1=length_t;frozentime=t;}
             
-            if((t==t_lim-1)&((t_lim-frozentime)<200)&(tries<max_tries)){
-                tries++;
-                t_lim+=500;
+            if((t==t_lim-1)&((t_lim-frozentime)<100)&(t<t_max-1000)){
+                t_lim+=1000;
             }
 
             
@@ -251,11 +288,22 @@ int main()
 
         //fprintf(stdout, "\nR=%i  MDL=%.2f, thread=%i,  Tr=%i", R, mean_domain_length,
         //        omp_get_thread_num(), frozentime);
-        fprintf(stdout, "\nR=%i  MDL=%.2f, Tr=%i, Tries=%i", R, mean_domain_length,
-                frozentime, tries);
-        fprintf(r_data,"%i %.2f %i\n",R,mean_domain_length, frozentime);
+        fprintf(stdout, "\nR=%i  MDL=%.2f, Frozen time=%i", R, mean_domain_length,
+                frozentime);
+        #pragma omp critical
+        {
+            fprintf(r_data, "%i %.2f %i\n", R, mean_domain_length, frozentime);
+        }
 
-
+        double sumf = 0;
+        for (unsigned int i = 0; i < n; i++)
+        {
+            sumf += ring[i];
+        }
+        if (sumf != sum)
+        {
+            fprintf(stdout, "Conservación magnetización violada R=%u, %f!=%f",r_iter, sum / n, sumf / n);
+        }
     }
     fclose(r_data);
     auto end = std::chrono::system_clock::now();
@@ -293,16 +341,7 @@ double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vec
     return sum;
 }
 
-void campoglaub(vector<int> &ring, vector<vector<int>> &matg)
-{
-    for(unsigned int i=0;i<n;i++){
-        int sum = 0;
-        for (unsigned int j=0;j<n;j++){
-            sum+=matg[i][j]*ring[j];
-        }
-        hg[i]=sum*2*ring[i];
-    }
-}
+
 
 double mdl(vector<int> &ring){
     //Que cuente a partir del primer cambio para que no ponga dominios extra por las condicioens de contorno
@@ -313,4 +352,41 @@ double mdl(vector<int> &ring){
     k+=abs(ring[n-1]-ring[0])/2;
     
     return n/k;
+}
+
+// Vamos a añadir la función de inicializacion con un dominio central gordo y el resto aleatorio
+void initialize_dominio_central(int ancho)
+{
+    double s;
+    uniform_real_distribution<double> r_distribution(0., 1.); // initialize the distribution r_distribution
+
+    for (unsigned i = n / 2 - ancho / 2; i < n / 2 + ancho / 2; i++)
+    {
+        init_ring[i] = 1;
+    }
+
+    for (unsigned int i = 0; i < n / 2 - ancho / 2; i++)
+    {
+        s = r_distribution(generator);
+        if (s < 0.5)
+        {
+            init_ring[i] = 1;
+        }
+        else
+        {
+            init_ring[i] = -1;
+        }
+    }
+    for (unsigned int i = n / 2 + ancho / 2; i < n; i++)
+    {
+        s = r_distribution(generator);
+        if (s < 0.5)
+        {
+            init_ring[i] = 1;
+        }
+        else
+        {
+            init_ring[i] = -1;
+        }
+    }
 }

@@ -1,5 +1,7 @@
-//Glauber y reac dif para temperatura 0
-//Estudio del MDL y tiempo hasta el estacionario 
+//Parece que hay problemas con las condiciones de contorno. 
+///////////////////////////////
+//Hg no es thread safe, se llama y se modifica globalmente. 
+///////////////////////////////
 #include<stdio.h>
 #include<vector>
 #include <math.h>
@@ -12,11 +14,12 @@ using namespace std;
 
 double pp = 1;
 
-unsigned int n = 128;
+unsigned int n = 256;
 unsigned int Rg=0;
-const int t_max = 500; // Tiempo
+const int t_max = 10000; // Tiempo
 
-float temperature=0.001f;
+unsigned int R_init=0;
+
 unsigned r_size=20;
 
 vector<unsigned int>R_vals(r_size,0);
@@ -63,12 +66,12 @@ int main()
         fprintf(stdout,"\n");
     }*/
 
-    FILE *r_data = fopen("./ising_data_R_low_temp_glaub/r_data.dat", "w");
-    
-    fprintf(stdout, "%i", r_size);
-    for (unsigned int i = 0; i < r_size; i++)
+    FILE *r_data = fopen("./ising_data/glaub_T0/r_data.dat", "w");
+
+    fprintf(stdout, "\nR_size= %llu", r_size);
+    for (unsigned i = 0; i < r_size; i++)
     {
-        R_vals[i] = i + 1;
+        R_vals[i] = R_init + i + 1;
     }
 
     char filename[256]; // Restringido a 42 caracteres, entonces solo caben en el nombre de R hasta 100.
@@ -98,7 +101,7 @@ int main()
         double length_tm1=0;
         int frozentime=0;
 
-        sprintf(filename, "./ising_data_R_low_temp_glaub/ising_dataR%i.dat", R); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data/glaub_T0/raw/ising_dataR%i.dat", R); // si no funciona %i probar %d
         
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)
@@ -180,7 +183,7 @@ int main()
                              
                 //double xr= r_distribution(generator);
                 double delta=hg[i1];
-                if((inR)&(delta<=0))
+                if((inR)&&(delta<=0))
                 {
                     frozenring[i1]=-frozenring[i1];
                 }
