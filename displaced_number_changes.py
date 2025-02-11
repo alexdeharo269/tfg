@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 def read_matrix_from_file(input_file, dtype=int):
     """
@@ -78,11 +79,11 @@ def write_changes_to_file(output_file, change_counts):
 if __name__ == "__main__":
     # --- File names (adjust paths as needed) ---
     # The full–resolution binary matrix file (e.g., ising_dataR39.dat)
-    original_file = "./ising_data_R_low_temp/ising_dataR40.dat"
+    original_file = sys.argv[1]
     # The domain centroids file (produced from the reduced matrix via DBSCAN)
-    centroid_file = "./ising_data_R_low_temp/domain_centroids_dbscan.dat"
+    centroid_file = sys.argv[2]
     # The output file for the displaced change counts
-    output_file = "./ising_data_R_low_temp/numberchanges40.txt"
+    output_file = sys.argv[3]
     
     # --- Read matrices ---
     # Original full-resolution binary matrix (0s and 1s)

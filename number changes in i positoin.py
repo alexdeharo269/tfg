@@ -1,4 +1,5 @@
 import os 
+import sys
 
 def read_matrix_from_file(input_file):
     with open(input_file, 'r') as file:
@@ -22,23 +23,12 @@ def write_changes_to_file(output_file, changes):
             file.write(f"{col} {count}\n")
 
 if __name__ == "__main__":
-    input_file = './ising_data_R_low_temp/ising_dataR40.dat'
-    output_file = './ising_data_R_low_temp/numberchanges40.txt'
+
+    
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
     
     matrix = read_matrix_from_file(input_file)
     changes = count_column_changes(matrix)
     write_changes_to_file(output_file, changes)
 
-'''
-def process_all_files_in_folder(folder_path):
-        for i in range(1, 41):
-            input_file = os.path.join(folder_path, f'ising_dataR{i}.dat')
-            output_file = os.path.join(folder_path, f'numberchanges{i}.txt')
-            
-            matrix = read_matrix_from_file(input_file)
-            changes = count_column_changes(matrix)
-            write_changes_to_file(output_file, changes)
-
-if __name__ == "__main__":
-    folder_path = './ising_data_R_low_temp'
-    process_all_files_in_folder(folder_path)'''

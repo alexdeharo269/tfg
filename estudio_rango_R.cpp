@@ -1,16 +1,14 @@
-// Comprobar thread safety (chatgpt dice que puede haber problemas)
 // En la dinamica glauber hay problemas de contorno, ver C:\Users\Ale\Desktop\UGR FISICA\TFG\TFG_things\ising_data\glaub_T0\raw\ising_dataR12.dat
 //Comprobar por qué están y si están también afectando esta dinámica. De todas formas la dinamica glauber pura
 //no parece muy interesante para este tipo de analisis, quizás probando con un dominio central y con magnetización 0?
-// Hacer figura con visualización clara del procesamiento de datos
+
 // Comprobar como se comoportan el analisis cuando se unen los dominios
 // Comprobar con 4 dominios
 // Analizar y entender el dbscan
 // para el fihero de centroids, quiero que compruebe cada 100 pasos que el número de centroids no ha cambiado, si cambia hay un
 // merge, y ya no podemos trackear el úlitmo paso (number changes) de la misma manera
-// Juntar todo el la nueva arquitectura de carpetas y hacer un pipeline directo para no tener que correr 5 archivos, aunque para
-//archivos individulaes solamente, imposible correr carpetas. Hacer el programa de forma que se meta en la carpeta correcta.
-// Poner todo en una figura de gnuplot que analice el proceso en casos concretos:
+
+
 /*
 -Quimera normal, estática
 -4 quimeras que se mueve
@@ -18,27 +16,10 @@
 -Aparecerán más casos con la dinamica de glauber y reac dif, pero con esos ya le puedo presentar a joaquin y hacer figuras buenas.
 */
 
-/*PIPELINE ACTUAL. COMPROBADO CON R_low_temp/R40.dat:
-corres aquí, aunque esto va para la nueva arquitectura de ficheros
-Promedio temporal: reduced matrix en compute.cpp
-Clusters y centroids: test_process.py
-Cambios y cuantificación quimeras: displaced_number_changes.py
-
-*/
-/*La úlitma figura no me la est*/
-
-/*Viernes: 
-1)comprobar condiciones de contorno y thread safety---> ultimo paso chatgpt solo para este fichero. si funciona comprobar en glauber
-Tambíen, sugerencia chatgpt, modifico hg en el fichero glauber
-2)Figura gnuplot con R39 o 40, el que mejor se vea y mandar correo. listo
-3)Subir ficheros nuevos
-*/
-
-
 /*
-Lunes:
-1) Construir pipeline con las nuevas carpetas
+Hacer un initialize_shuffle
 */
+
 
 
 #include<stdio.h>
@@ -49,15 +30,18 @@ Lunes:
 #include <random>
 #include <omp.h>
 #include<numeric>
+#include<cstdlib>
 using namespace std;
 
 double pp = 1;
 
-unsigned int n =512;
+unsigned int n =256;
 unsigned int Rg=0;
-const int t_max = 10000; // Tiempo
-unsigned int R_init=30;
+const int t_max = 100000;// Tiempo
+unsigned int R_init=10;
 long long unsigned int r_size=10;
+float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 9.0f, 10.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
+double temperature=2.00;
 
 vector<unsigned int>R_vals(r_size,0);
  
@@ -74,8 +58,7 @@ mt19937_64 generator(seed1); // generador  mt19937_64
 
 void initialize();
 double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk);
-void campoglaub(vector<int> &ring, vector<vector<int>> &matg);
-void initialize_dominio_central(int ancho);
+void initialize_dominio_central(unsigned ancho);
 double mdl(vector<int> &ring);
 
 int main()
@@ -83,6 +66,7 @@ int main()
     auto start = std::chrono::system_clock::now();
     
 
+    //initialize_dominio_central(64);
     initialize();
     //Print a la matriz de conectividad
 
@@ -125,12 +109,6 @@ int main()
                 matk[i][j % n] = 1;
                 matk[j % n][i] = 1;
             }
-
-            for (unsigned int j = i + 1; j <= (i + R + Rg); j++)
-            {
-                matg[i][j % n] = 1 - matk[i][j % n];
-                matg[j % n][i] = 1 - matk[j % n][i];
-            }
         }
 
         double mean_domain_length;
@@ -138,7 +116,7 @@ int main()
         double length_tm1=0;
         int frozentime=0;
 
-        sprintf(filename, "./ising_data/kawa_T0/raw/ising_dataR%i.dat", R); // si no funciona %i probar %d
+        sprintf(filename, "./ising_data/kawa_T0/raw/ising_dataR%iT%1f.dat", R, temperature);
         
         FILE *flips_data = fopen(filename, "w");
         if (flips_data == NULL)
@@ -149,7 +127,8 @@ int main()
 
 
         //Thread-safe rnadonm number generator
-        mt19937_64 local_generator(seed1 + omp_get_thread_num() + r_iter);
+      //mt19937_64 local_generator(seed1 + static_cast<unsigned>(omp_get_thread_num())+ r_iter);
+        mt19937_64 local_generator(seed1 + r_iter);
 
         uniform_int_distribution<unsigned int> i_distribution(0, n - 1); // Distribución random para los i
         uniform_real_distribution<double> r_distribution(0., 1.);        // initialize the distribution r_distribution
@@ -182,7 +161,6 @@ int main()
         {
             frozenring = ring;
             
-            campoglaub(ring,matg); 
             /*
             if(t==t_max/2){
                 //fprintf(stdout, "\n");
@@ -217,16 +195,16 @@ int main()
                 // Calculo a partir de i1 e i2 si está en rango R o Rg
                 inR = (((i2 >= low_bound) && (i2 <= up_bound)) ||
                        ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))));
-                //inRg = (((i2 >= low_bound_reac) && (i2 <= up_bound_reac)) ||
-                        //((up_bound_reac < low_bound_reac) && ((i2 >= low_bound_reac) || (i2 < up_bound_reac))));
+               
 
-                             
-                //double xr= r_distribution(generator);
                 double delta=campokawa(i1,i2,ring,matk);
-                if((inR)&&(delta<=0))
-                {
-                    swap(frozenring[i1], frozenring[i2]);
-                }
+                double p =std::min(exp(-delta / temperature),1.0);
+                
+                double ji = r_distribution(generator);
+                if ((ji<p)&&(inR)){
+                    std::swap(frozenring[i1], frozenring[i2]);
+                }   
+
                 /*
                 int mov;
                 if(xr<pp){
@@ -355,7 +333,7 @@ double mdl(vector<int> &ring){
 }
 
 // Vamos a añadir la función de inicializacion con un dominio central gordo y el resto aleatorio
-void initialize_dominio_central(int ancho)
+void initialize_dominio_central(unsigned ancho)
 {
     double s;
     uniform_real_distribution<double> r_distribution(0., 1.); // initialize the distribution r_distribution
@@ -390,3 +368,5 @@ void initialize_dominio_central(int ancho)
         }
     }
 }
+
+

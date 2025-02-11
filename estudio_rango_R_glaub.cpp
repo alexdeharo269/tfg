@@ -2,6 +2,10 @@
 ///////////////////////////////
 //Hg no es thread safe, se llama y se modifica globalmente. 
 ///////////////////////////////
+
+//////////////////////////////
+//Hay que construir pipeline con las nuevas carpetas, o al menos mirar los resultados ahí.
+/////////////////////////////
 #include<stdio.h>
 #include<vector>
 #include <math.h>

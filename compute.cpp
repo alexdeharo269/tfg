@@ -1,57 +1,53 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
+// Function to read a matrix from a file
 vector<vector<int>> readMatrixFromFile(const string &filename)
 {
-    ifstream in(filename);
-    if (!in.is_open())
+    ifstream file(filename);
+    vector<vector<int>> matrix;
+    if (!file)
     {
-        cerr << "Error: Could not open file '" << filename << "'. Please check if the file exists and you have read permissions." << endl;
+        cerr << "Error: Unable to open file " << filename << endl;
         exit(EXIT_FAILURE);
     }
 
-    vector<vector<int>> matrix;
-    int value;
     string line;
-
-    while (getline(in, line))
+    while (getline(file, line))
     {
         vector<int> row;
-        istringstream iss(line);
-
-        while (iss >> value)
+        for (char c : line)
         {
-            if (value == 0 || value == 1)
-            {
-                row.push_back(value);
+            if (c == '0' || c == '1')
+            { // Assuming binary matrix
+                row.push_back(c - '0');
             }
         }
-
         if (!row.empty())
         {
             matrix.push_back(row);
         }
     }
-
+    file.close();
     return matrix;
 }
 
-vector<vector<float>> reduced_matrix(const vector<vector<int>> &matrix, unsigned rows, unsigned cols, unsigned step)
+vector<vector<float>> reduced_matrix(const vector<vector<int>> &matrix, unsigned rows, unsigned cols, unsigned step, const string output_filename)
 {
     // Open output file
-    ofstream outFile("./ising_data_R_low_temp/reduced_matrix.dat");
+    ofstream outFile(output_filename);
     if (!outFile.is_open())
     {
         cerr << "Error: Could not create output file." << endl;
     }
-
+    float step_f = static_cast<float>(step);
     unsigned reduced_rows = rows / step;
-    vector<vector<float>> matrix_reduced(reduced_rows, vector<float>(cols, 0));
+    vector<vector<float>> matrix_reduced(reduced_rows, vector<float>(cols, 0.0f));
 
     // Compute reduced matrix
     for (unsigned i = 0; i < cols; i++)
@@ -62,7 +58,7 @@ vector<vector<float>> reduced_matrix(const vector<vector<int>> &matrix, unsigned
             {
                 if (k * step + j < rows)
                 { // Ensure we don't go out of bounds
-                    matrix_reduced[k][i] += static_cast<float>(matrix[k * step + j][i]) / step;
+                    matrix_reduced[k][i] += static_cast<float>(matrix[k * step + j][i]) / step_f;
                 }
             }
         }
@@ -83,44 +79,18 @@ vector<vector<float>> reduced_matrix(const vector<vector<int>> &matrix, unsigned
 
 
 
-
-void writeMatrixToFile(const vector<vector<int>> &matrix, const string &filename)
+int main(int argc, char *argv[])
 {
-    ofstream out(filename);
-    if (!out.is_open())
+    if (argc < 3)
     {
-        cerr << "Error: Could not create output file '" << filename << "'." << endl;
-        exit(EXIT_FAILURE);
+        cerr << "Usage: " << argv[0] << " <input_file> <output_file>\n";
+        return EXIT_FAILURE;
     }
 
-    out.close();
-}
+    string filename = argv[1];
+    string output_filename = argv[2];
 
-void write_reduced(const vector<vector<float>> &matrix, const string &filename)
-{
-    ofstream out(filename);
-    if (!out.is_open())
-    {
-        cerr << "Error: Could not create output file '" << filename << "'." << endl;
-        exit(EXIT_FAILURE);
-    }
-
-    for (const auto &row : matrix)
-    {
-        for (int val : row)
-        {
-            out << val << " ";
-        }
-        out << endl;
-    }
-
-    out.close();
-}
-
-int main()
-{
-    const unsigned step=50;
-    string filename = "./ising_data_R_low_temp/ising_dataR40.dat";
+    const int step = 50;
     vector<vector<int>> matrix = readMatrixFromFile(filename);
 
     // Get correct matrix dimensions
@@ -128,18 +98,15 @@ int main()
     unsigned cols = static_cast<unsigned>(matrix.empty() ? 0 : matrix[0].size());
     cout << "Time: " << rows << ", Size: " << cols << endl;
 
-
-    
-
     if (rows == 0 || cols == 0)
     {
         cerr << "Error: Matrix is empty or not formatted correctly." << endl;
         return EXIT_FAILURE;
     }
 
-    vector<vector<float>> matrix_reduced =reduced_matrix(matrix, rows, cols, step);
+    vector<vector<float>> matrix_reduced = reduced_matrix(matrix, rows, cols, step,output_filename);
 
+    
 
     return 0;
 }
-
