@@ -3,8 +3,6 @@
 //no parece muy interesante para este tipo de analisis, quizás probando con un dominio central y con magnetización 0?
 
 // Comprobar como se comoportan el analisis cuando se unen los dominios
-// Comprobar con 4 dominios
-// Analizar y entender el dbscan
 // para el fihero de centroids, quiero que compruebe cada 100 pasos que el número de centroids no ha cambiado, si cambia hay un
 // merge, y ya no podemos trackear el úlitmo paso (number changes) de la misma manera
 
@@ -21,12 +19,13 @@
 
 /*
 Hacer un initialize_shuffle
-Si el analisis de quimeras lo sistematizo pasarlo entero a c++
+*/
+/*
+Preguntar a ChatGPT por que proporcionan distinto resultado haciendo el kawasaki step, aunque coherente. No estoy haciendo lo mismo?
+Meter temperatura a las simulaciones y ver como evolucionan las quimeras. 
 */
 
-/*
-Analizar para magnetización distinta de 0 y mandar correo. buscar en literatura cuantificación quimera.
-*/
+
 
 #include<stdio.h>
 #include<vector>
@@ -41,11 +40,13 @@ using namespace std;
 
 unsigned int n =1024;
 unsigned int Rg=0;
-const int t_max = 20000;// Tiempo
-unsigned int R_init=100;
-long long unsigned int r_size=6;
+const int t_max = 50000;// Tiempo
+unsigned int R_init=0;
+long long unsigned int r_size=2;
 long long unsigned int r_jump=50;
+bool Zero_Temperature=true;
 float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 9.0f, 10.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
+
 double temperature=0.000000000001;
 const double avg_mag=0.75;
 
@@ -59,12 +60,17 @@ unsigned seed1 = 1944243;   // semilla generador de números aleatorios
 mt19937_64 generator(seed1); // generador  mt19937_64
 //random_device{}(); para generar numeros realmente aleatorios que paso como semillas
 
-
+typedef void (*UpdateFunc)(uniform_int_distribution<unsigned int> &, uniform_real_distribution<double> &,mt19937_64 &, vector<int> &, 
+    vector<vector<int>> &, int, bool, double);
 
 void initialize();
 double campokawa(unsigned int i1, unsigned int i2, vector<int> &ring, vector<vector<int>> &matk);
 void initialize_dominio_central(unsigned ancho);
 double mdl(vector<int> &ring);
+void initialize_shuffle();
+void Kawasaki_Step(uniform_int_distribution<unsigned int> &i_distribution , uniform_real_distribution<double> &r_distribution ,
+                   mt19937_64 &gen, vector<int> &ring, vector<int> &frozen_ring, vector<vector<int>> &matk, int n,
+                   unsigned int R, bool Zero_Temperature, double temperature);
 
 int main()
 {
@@ -126,14 +132,7 @@ int main()
         vector<int> frozenring(n, 0);
         vector<int> ring = init_ring;
 
-
-        unsigned int i1, i2;
-        //double p;
-        //double ji;
         int t = 0;
-        unsigned int low_bound;
-        unsigned int up_bound;
-        bool inR=false;
         int t_lim=1000;
         
         ring=init_ring;
@@ -143,36 +142,10 @@ int main()
             frozenring = ring;
 
             //for (unsigned int try_ = 0; try_ < n / ((2 * R * pp / n + 2 * Rg * (1 - pp) / n)); try_++)
-            for (unsigned int try_ = 0; try_ < n ; try_++)
+            Kawasaki_Step(i_distribution, r_distribution,
+                               local_generator, ring, frozenring, matk, n,
+                               R, Zero_Temperature, temperature); 
             
-            {
-                i1 = i_distribution(generator);
-                i2 = i_distribution(generator);
-                
-
-                // Para trabajar con índices unsigned teniendo en cuenta la condición circular.
-                low_bound = (i1 >= R) ? (i1 - R) : (i1 + n - R);
-                up_bound = (i1 + R) % n;
-                
-                inR = (((i2 >= low_bound) && (i2 <= up_bound)) ||
-                       ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))));
-               
-
-                double delta=campokawa(i1,i2,ring,matk);
-                /*
-                double p =std::min(exp(-delta / temperature),1.0);
-                
-                double ji = r_distribution(generator);
-                if ((ji<p)&&(inR)){
-                    std::swap(frozenring[i1], frozenring[i2]);
-                }
-                */
-                if ((delta <= 0) && (inR))
-                {
-                    std::swap(frozenring[i1], frozenring[i2]);
-                }
-                
-            }
 
             ring = frozenring;
             
@@ -293,4 +266,38 @@ void initialize_dominio_central(unsigned ancho)
     }
 }
 
+void Kawasaki_Step(uniform_int_distribution<unsigned int> &i_distribution, uniform_real_distribution<double> &r_distribution,
+                   mt19937_64 &gen, vector<int> &ring, vector<int> &frozen_ring, vector<vector<int>> &matk, int n, 
+                   unsigned int R, bool Zero_Temperature, double temperature)
+{
+    for (unsigned int try_ = 0; try_ < n; try_++)
 
+    {
+        unsigned int i1, i2, low_bound, up_bound;
+        bool inR;
+        i1 = i_distribution(gen);
+        i2 = i_distribution(gen);
+        
+        // Para trabajar con índices unsigned teniendo en cuenta la condición circular.
+        low_bound = (i1 >= R) ? (i1 - R) : (i1 + n - R);
+        up_bound = (i1 + R) % n;
+
+        inR = (((i2 >= low_bound) && (i2 <= up_bound)) ||
+               ((up_bound < low_bound) && ((i2 >= low_bound) || (i2 < up_bound))));
+
+        double delta = campokawa(i1, i2, ring, matk);
+        if(Zero_Temperature){
+            if ((delta <= 0) && (inR))
+            {
+                std::swap(frozen_ring[i1], frozen_ring[i2]);
+            }
+        }
+        else{
+            double p =std::min(exp(-delta / temperature),1.0);
+            double ji = r_distribution(gen);
+            if ((ji<p)&&(inR)){
+                std::swap(frozen_ring[i1], frozen_ring[i2]);
+            }
+        }
+    }
+}
