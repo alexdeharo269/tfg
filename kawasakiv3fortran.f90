@@ -1,4 +1,14 @@
 program kawasakiv3fortran
+!MODIFICACIONES:
+! He hecho el cálculo de campokawa en el bucle principal, en lugar de hacerlo en un bucle aparte, ahorrando N^2 operaciones
+! La dinámica de Glauber ahora comprueba que están conectados según la matrix epsilon
+! En el cálculo de campokawa, se usaba epsilon en lugar de epsilonelec. He solucionado el error.
+! He cambiado la forma en que se imprime rednuevo y filenuevo, para que sea más fácil de leer.
+! Ahora se puede ejecutar en gnuplot como el mío: plot 'filenuevo.dat' matrix with image
+! Imprimo en pantalla el porcentaje de aceptación de swaps al final de la simulación
+! Inicializo el anillo con un 75% de espines arriba y un 25% de espines abajo
+! Por lo demás solo he tocado los parámetros
+
     real*8, dimension (:), allocatable :: s, hglauber, hvecchem
     real*8, dimension (:,:), allocatable :: hkawasaki, epsilon, epsilonelec
     integer, dimension (:,:), allocatable :: indiceschem, raster
@@ -26,14 +36,14 @@ program kawasakiv3fortran
 ! 3) para nchem pequeño puedo hacer que vuelvan a aparecer haciendo mas pequeño nelec para pp=0
 !     por ejempl nelec=7, nchem=7 t pp=0. Tambien salen para pp=0.001
 
-    nmax=300
-    N=200
-    nelec=50
-    nchem=0
+    nmax=1000
+    N=1000
+    nelec=20
+    nchem=10
     nnchem=2*nchem
     T=0.5
-    JJ=0.00000
-    pp=1.0
+    JJ=1.00000
+    pp=0.9
     niter=N*nmax
 
     write(*,*) niter
@@ -107,9 +117,10 @@ program kawasakiv3fortran
   do i=1,N
      do j=1,N
         
-        write(12,*) i , j, epsilonelec(i,j), epsilon(i,j)
+        write(12,'(I1, 1X)', advance='no')  int(epsilon(i,j))
     
      end do
+        write(12, *)  ! Newline
   end do
 
 
@@ -120,7 +131,7 @@ do i=1,N
     s(i)=1
     xr=dranu()
 
-    if (xr>0.75) then
+    if (xr>0.5) then
         s(i)=-1
     endif
 enddo
@@ -128,27 +139,9 @@ enddo
 !!!!! campos locales iniciales
 !!! Glauber
 
-do i=1,N
-    hvecchem(i)=0.
-    do l=1,nnchem
-        is=indiceschem(i,l)
-        hvecchem(i)=hvecchem(i)+1.*s(is)
-    enddo
-    hglauber(i)=2.*JJ*s(i)*hvecchem(i)
-enddo
 
 
 
-!!! kawasaki
-
-do i=1,N    
-    do j=1,N
-        sumahkawa=(hvecchem(i)-hvecchem(j)) 
-        sumahkawa=sumahkawa-epsilon(i,j)*s(j)+epsilon(j,i)*s(i)
-        hkawasaki(i,j)=JJ*(s(i)-s(j))*sumahkawa
-        !write(*,*) 'kawa', hkawasaki(i,j)
-    enddo
-enddo
 
 
 
@@ -171,40 +164,55 @@ do it=1,niter
 
     xr1=dranu()
     ss=1
-    delta=hglauber(iran)
+    delta=0.
+    do j=1,N
+        delta=delta+1.*s(j)*epsilon(i,j)
+    enddo
+    delta=2.*JJ*s(i)*delta
     !prob=min(exp(-delta/T),1.)
     prob=1
     if (delta>0) then
+    !me he quedado por aquí
        prob=exp(-delta/T)
     endif  
+    !!! aceptamos o no según estén conectados
+    prob=prob*epsilon(iran,jran)
 
     if (xr1.lt.pp) then
-        count_attempt = count_attempt + 1
-
+        !write(*,*) "error"
         ss=0
-        delta=hkawasaki(iran,jran)
-        if(delta.ne.0) then
-            write(*,*) delta !delta siempre es 0 ahoramismo
-        endif
+        sumahkawa=0.
+        do k=1,N
+            sumahkawa=sumahkawa-epsilonelec(jran,k)*s(k)+epsilonelec(iran,k)*s(k)
+        enddo 
+        sumahkawa=sumahkawa-epsilonelec(iran,jran)*s(jran)+epsilonelec(jran,iran)*s(iran)
+        delta=JJ*(s(iran)-s(jran))*sumahkawa
+
         prob=epsilonelec(iran,jran)*(min(exp(-delta/T),1.))*(1-isigno)*0.5
-        !prob=0
-        !if (delta<0) then           
-        !    prob=1*epsilonelec(iran,jran)*(1-isigno)*0.5
-            !write(*,*) delta, prob, isigno
-        !endif
+        
     endif
 
     xr2=dranu()
-    
-    
     if (prob.gt.xr2) then
-        count_accept = count_accept + 1
+        !count_accept = count_accept + 1
         iss=s(iran)
         iss2=s(jran)
         s(iran)=iss2*(1-ss)-iss*ss
         s(jran)=ss*s(jran)+(1-ss)*iss
-        
+        !if(ss==0) then 
+        !aux = s(jran)
+        !s(jran)=s(iran)
+        !s(iran)=aux
+        !endif
+        !if(ss==1) then 
+        !s(iran)=-s(iran)
+        !endif
+
+
     endif
+    !if (prob.gt.xr2) then 
+    !    s(iran)=-s(iran)
+    !endif
 
 
 
@@ -213,33 +221,27 @@ do it=1,niter
 
     !!! Glauber
 
-    do i=1,N
-        hvecchem(i)=0.
-        do l=1,nnchem
-            is=indiceschem(i,l)
-            hvecchem(i)=hvecchem(i)+1.*s(is)
-        enddo
-        hglauber(i)=2.*JJ*s(i)*hvecchem(i)
-    enddo
+    !do i=1,N
+    !    hvecchem(i)=0.
+    !    !do l=1,nnchem
+    !    !    is=indiceschem(i,l)
+    !    !    hvecchem(i)=hvecchem(i)+1.*s(is)
+    !    !aenddo
+    !    do j=1,N
+    !        hvecchem(i)=hvecchem(i)+1.*s(j)*epsilon(i,j)
+    !    enddo
 
-    !!! kawasaki
+    !    hglauber(i)=2.*JJ*s(i)*hvecchem(i)
+    !enddo
 
-    do i=1,N    
-        do j=1,N
-            sumahkawa=0.
-            sumahkawa=hvecchem(i)-hvecchem(j) 
-            sumahkawa=sumahkawa-epsilon(i,j)*s(j)+epsilon(j,i)*s(i)
-            hkawasaki(i,j)=JJ*(s(i)-s(j))*sumahkawa
-        enddo
-    enddo
-    
+
 
 
 ! pintamos los datos
 
     if (it.gt.npinta) then
         itt=it/N
-       !write(*,*) itt
+      !write(*,*) itt
         do j=1,N
             
             write(11,*) int(s(j))
