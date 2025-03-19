@@ -92,6 +92,7 @@ int main(int argc, char *argv[])
 
     const int step = 50;
     vector<vector<int>> matrix = readMatrixFromFile(filename);
+    
 
     // Get correct matrix dimensions
     unsigned rows = static_cast<unsigned>(matrix.size());

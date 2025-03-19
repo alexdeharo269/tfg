@@ -120,7 +120,7 @@ vector<int> countDisplacedColumnChanges(const vector<vector<int>>& original_matr
                 change_counts[j]++;
         }
         if (i % 1000 == 0){
-            cout << "Processed row " << i << " of " << num_rows << "\r";
+            cout << "Time: " << i/num_rows << "\r";
         }
     }
     return change_counts;
@@ -293,6 +293,27 @@ void write_incoherece_matrix(const vector<vector<int>> &matrix, const string &fi
     outfile.close();
 }
 
+//Read from temp file for pipe files based approach
+vector<vector<int>> readMatrixFromStdin()
+{
+    vector<vector<int>> matrix;
+    string line;
+    while (getline(cin, line))
+    {
+        stringstream ss(line);
+        vector<int> row;
+        int value;
+        while (ss >> value)
+        {
+            row.push_back(value);
+        }
+        if (!row.empty())
+        {
+            matrix.push_back(row);
+        }
+    }
+    return matrix;
+}
 //---------------------------------------------------------------------
 // (Existing) Main function for displaced number changes, now extended.
 // 
@@ -302,20 +323,33 @@ void write_incoherece_matrix(const vector<vector<int>> &matrix, const string &fi
 //   3. The output file for the metrics (columns: index, displaced changes, incoherence)
 //---------------------------------------------------------------------
 int main(int argc, char* argv[]) {
-    if (argc < 5) {
-        cerr << "Usage: " << argv[0] << " <original_file> <centroid_file> <output_file> <incoherence_matrix>" << endl;
+    if (argc < 6) {
+        cerr << "Usage: " << argv[0] << " <original_file> <centroid_file> <output_file> <incoherence_matrix> <debug_s>" << endl;
         return EXIT_FAILURE;
     }
-    cout << "Processing..." << endl;
     
     string original_file = argv[1];
     string centroid_file = argv[2];
     string output_file = argv[3];
     string incoherence_matrix = argv[4];
+    string debug_s = argv[5];
+    bool debug;
+    if (debug_s == "true")
+    {
+        debug = true;
+    }
+    else
+    {
+        debug = false;
+    }
     // Read matrices.
     vector<vector<int>> original_matrix = readMatrixFromFile(original_file);
-    vector<vector<int>> centroid_matrix_reduced = readMatrixFromFile(centroid_file);
-    
+    vector<vector<int>> centroid_matrix_reduced;
+    if (centroid_file == "-") {
+        centroid_matrix_reduced = readMatrixFromStdin();
+    } else {
+        centroid_matrix_reduced = readMatrixFromFile(centroid_file);
+    }    
     // Replicate the reduced centroid matrix to full resolution.
     // (Assuming each row in the reduced centroid file corresponds to 50 original rows.)
     int replication_factor = 50;
@@ -338,8 +372,9 @@ int main(int argc, char* argv[]) {
 
     // Write both metrics to the output file (three columns).
     writeMetricsToFile(output_file, displaced_changes, incoherence_counts);
-    write_incoherece_matrix(incoh_matrix, incoherence_matrix);
+    if(debug==true){
+        write_incoherece_matrix(incoh_matrix, incoherence_matrix);
+    }
     
-    cout << "Processing complete. Metrics written to " << output_file << endl;
     return EXIT_SUCCESS;
 }

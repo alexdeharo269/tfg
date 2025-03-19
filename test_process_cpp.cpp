@@ -163,7 +163,7 @@ process_row_dbscan_periodic(const vector<double>& row, int eps = 5, int min_samp
             // Enforce minimum (and maximum) domain size:
             // Accept clusters only if size >= n/10 and <= n/1.5.
             if (cluster_idx.size() < static_cast<size_t>(n / 50.0) ||
-                cluster_idx.size() > static_cast<size_t>(n / 1.5))
+                cluster_idx.size() > static_cast<size_t>(n / 1.2))
                 continue;
 
             // Compute the circular centroid.
@@ -260,34 +260,6 @@ vector<vector<int>> build_centroid_matrix(const vector<vector<ClusterInfo>>& cen
     return centroid_matrix;
 }
 
-//------------------------------------------------------------------------------
-// Function: read_reduced_matrix
-//
-// Reads a matrix of doubles from a text file. The file is assumed to contain
-// whitespace–separated numbers (each row is on a separate line).
-//------------------------------------------------------------------------------
-vector<vector<double>> read_reduced_matrix(const string& filename) {
-    ifstream infile(filename);
-    if (!infile) {
-        cerr << "Error opening input file: " << filename << endl;
-        exit(EXIT_FAILURE);
-    }
-    vector<vector<double>> matrix;
-    string line;
-    while (getline(infile, line)) {
-        if (line.empty())
-            continue;
-        istringstream iss(line);
-        vector<double> row;
-        double value;
-        while (iss >> value)
-            row.push_back(value);
-        if (!row.empty())
-            matrix.push_back(row);
-    }
-    infile.close();
-    return matrix;
-}
 
 //------------------------------------------------------------------------------
 // Function: write_domain_label_matrix
@@ -321,36 +293,143 @@ void write_centroid_matrix(const vector<vector<int>>& matrix, const string& file
     write_domain_label_matrix(matrix, filename);
 }
 
+// Function to read a matrix from a file
+vector<vector<int>> readMatrixFromFile(const string &filename)
+{
+    ifstream file(filename);
+    vector<vector<int>> matrix;
+    if (!file)
+    {
+        cerr << "Error: Unable to open file " << filename << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    string line;
+    while (getline(file, line))
+    {
+        vector<int> row;
+        for (char c : line)
+        {
+            if (c == '0' || c == '1')
+            { // Assuming binary matrix
+                row.push_back(c - '0');
+            }
+        }
+        if (!row.empty())
+        {
+            matrix.push_back(row);
+        }
+    }
+    file.close();
+    return matrix;
+}
+
+vector<vector<double>> reduced_matrix(const vector<vector<int>> &matrix, unsigned rows, unsigned cols, 
+    unsigned step, const string output_filename,bool debug)
+{
+    
+    double step_f = static_cast<double>(step);
+    unsigned reduced_rows = rows / step;
+    vector<vector<double>> matrix_reduced(reduced_rows, vector<double>(cols, 0.0));
+
+    // Compute reduced matrix
+    for (unsigned i = 0; i < cols; i++)
+    {
+        for (unsigned k = 0; k < reduced_rows; k++)
+        {
+            for (unsigned j = 0; j < step; j++)
+            {
+                if (k * step + j < rows)
+                { // Ensure we don't go out of bounds
+                    matrix_reduced[k][i] += static_cast<double>(matrix[k * step + j][i]) / step_f;
+                }
+            }
+        }
+    }
+    if (debug = true)
+    {
+        // Open output file
+        ofstream outFile(output_filename);
+        if (!outFile.is_open())
+        {
+            cerr << "Error: Could not create output file." << endl;
+        }
+        // Write transposed matrix directly by swapping loop order
+
+        for (unsigned k = 0; k < reduced_rows; k++)
+        {
+            for (unsigned i = 0; i < cols; i++)
+            {
+                outFile << matrix_reduced[k][i] << " ";
+            }
+            outFile << endl;
+        }
+
+        outFile.close();
+    }
+        return matrix_reduced;
+    }
+
 //------------------------------------------------------------------------------
 // Main function.
 //------------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
-    if (argc < 4) {
-        cerr << "Usage: " << argv[0] << " <reduced_matrix_file> <domain_label_file> <centroid_matrix_file>" << endl;
+    if (argc < 6) {
+        cerr << "Usage: " << argv[0] << " <input_file> <reduced_matrix_file> <domain_label_file> <centroid_matrix_file> <debug_s>" << endl;
+        return EXIT_FAILURE;
+    }
+    string input_file = argv[1];
+    string reduced_matrix_file = argv[2];
+    string domain_label_file = argv[3];
+    string centroid_matrix_file = argv[4];
+    string debug_s=argv[5];
+    bool debug;
+    if(debug_s=="true"){
+        debug=true;
+    }
+    else{
+        debug=false;
+    }
+    
+    const int step = 50;
+    vector<vector<int>> matrix = readMatrixFromFile(input_file);
+
+    // Get correct matrix dimensions
+    unsigned rows = static_cast<unsigned>(matrix.size());
+    unsigned cols = static_cast<unsigned>(matrix.empty() ? 0 : matrix[0].size());
+
+    if (rows == 0 || cols == 0)
+    {
+        cerr << "Error: Matrix is empty or not formatted correctly." << endl;
         return EXIT_FAILURE;
     }
 
-    string reduced_matrix_file   = argv[1];
-    string domain_label_file     = argv[2];
-    string centroid_matrix_file  = argv[3];
-    int RV = 5;  // The window range around the centroid to mark.
-
-    // Read the reduced matrix from file.
-    vector<vector<double>> reduced_matrix = read_reduced_matrix(reduced_matrix_file);
-    if (reduced_matrix.empty()) {
-        cerr << "Error: Reduced matrix is empty." << endl;
-        return EXIT_FAILURE;
+    vector<vector<double>> reduced_mat = reduced_matrix(matrix, rows, cols, step, reduced_matrix_file,debug);
+    
+    // Convert reduced_mat from float to double.
+    vector<vector<double>> reduced_mat_double;
+    reduced_mat_double.reserve(reduced_mat.size());
+    for (const auto& row_f : reduced_mat) {
+        vector<double> row_d;
+        row_d.reserve(row_f.size());
+        for (float value : row_f) {
+            row_d.push_back(static_cast<double>(value));
+        }
+        reduced_mat_double.push_back(row_d);
     }
-    int num_rows = static_cast<int>(reduced_matrix.size());
-    int num_cols = static_cast<int>(reduced_matrix[0].size());
-    cout << "Read reduced matrix with shape (" << num_rows << ", " << num_cols << ")" << endl;
+    
+    int RV = 1;  // The window range around the centroid to mark.
+
+    
+    int num_rows = static_cast<int>(reduced_mat_double.size());
+    int num_cols = static_cast<int>(reduced_mat_double[0].size());
 
     // Process the matrix row-by-row using periodic DBSCAN.
     // Adjust eps, min_samples, and threshold as needed.
     int eps = 3;
     int min_samples = 5;
     double threshold = 0.5;
-    auto processed = process_matrix_dbscan_periodic(reduced_matrix, eps, min_samples, threshold);
+    auto processed = process_matrix_dbscan_periodic(reduced_mat_double, eps, min_samples, threshold);
     vector<vector<int>> domain_label_matrix = processed.first;
     vector<vector<ClusterInfo>> centroids_all = processed.second;
 
@@ -358,9 +437,11 @@ int main(int argc, char* argv[]) {
     vector<vector<int>> centroid_matrix = build_centroid_matrix(centroids_all, num_cols, RV);
 
     // Write the output matrices to files.
-    write_domain_label_matrix(domain_label_matrix, domain_label_file);
-    write_centroid_matrix(centroid_matrix, centroid_matrix_file);
+    if(debug=true){
+        write_domain_label_matrix(domain_label_matrix, domain_label_file);
+        write_centroid_matrix(centroid_matrix, centroid_matrix_file);
+    }
+    
 
-    cout << "Processing complete." << endl;
     return 0;
 }
