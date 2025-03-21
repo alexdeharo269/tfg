@@ -28,21 +28,22 @@
 #include<cstdlib>
 using namespace std;
 
-double pp=0.9;
-unsigned int n =1000;
+double pp=1.00;
+unsigned int n =200;
 unsigned int Rg=10;
-const int t_max = 1000;      // Tiempo
-unsigned int R_init=20;
-long long unsigned int r_size=1;
-unsigned int r_jump=5;
-bool Zero_Temperature=false;
+const int t_max = 5000;      // Tiempo
+unsigned int R_init=55;
+long long unsigned int r_size=5;
+unsigned int r_jump=1;
+bool Zero_Temperature=true;
 float temperature_vals[] = {0.01f, 0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 9.0f, 10.0f}; // TEMPERATURAS ENTERAS DE 1 A 10
 
-double temperature=0.5;
-const double avg_mag=0.50;
+double temperature=0.00000001;
+const double avg_mag=0.75;
+
+
 
 vector<unsigned int>R_vals(r_size,0);
- 
 vector<int>init_ring(n,0);
 
 
@@ -165,12 +166,12 @@ int main()
             //frozenring = ring;
 
             //for (unsigned int try_ = 0; try_ < n / ((2 * R * pp / n + 2 * Rg * (1 - pp) / n)); try_++)
-            //Kawasaki_Step_sequential(i_distribution, r_distribution,
-            //                   local_generator, ring, matk, Zero_Temperature, temperature);
+            Kawasaki_Step_sequential(i_distribution, r_distribution,
+                               local_generator, ring, matk, Zero_Temperature, temperature);
             
-            Reac_dif_Step_sequential(i_distribution, r_distribution,
-                                          local_generator,ring, matk,  matg, pp,  n,
-                                          Zero_Temperature, temperature);
+            //Reac_dif_Step_sequential(i_distribution, r_distribution,
+            //                              local_generator,ring, matk,  matg, pp,  n,
+            //                              Zero_Temperature, temperature);
             
             //Glauber_Step(i_distribution,r_distribution,local_generator,ring,frozenring,matg,Zero_Temperature,temperature);
 

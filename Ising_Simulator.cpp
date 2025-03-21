@@ -26,7 +26,6 @@ IsingSimulator::IsingSimulator(const SimulationParams &params,
     matk.assign(params.n, std::vector<int>(params.n, 0));
     matg.assign(params.n, std::vector<int>(params.n, 0));
 }
-
 // Initialize the ring spins based on avg_mag.
 void IsingSimulator::initializeRing() {
     std::mt19937_64 gen(seed);
@@ -35,6 +34,18 @@ void IsingSimulator::initializeRing() {
         double s = dist(gen);
         init_ring[i] = (s < params.avg_mag) ? 1 : -1;
     }
+    ring = init_ring;
+}
+// Initialize the ring spins ensuring an equal number of up (+1) and down (-1) spins,
+// and then shuffling them randomly.
+void IsingSimulator::initializeRingBalanced() {
+    init_ring.resize(params.n);
+    // Fill first half with +1 and second half with -1.
+    std::fill(init_ring.begin(), init_ring.begin() + params.n / 2, 1);
+    std::fill(init_ring.begin() + params.n / 2, init_ring.end(), -1);
+    // Shuffle the spins randomly.
+    std::mt19937_64 gen(seed);
+    std::shuffle(init_ring.begin(), init_ring.end(), gen);
     ring = init_ring;
 }
 
@@ -163,23 +174,7 @@ void IsingSimulator::simulationLoop(const std::string &dataFilename)
     fclose(flips_data);
     meanDomainLength = calculateMDL();
 }
-/*
-// Write a metadata file (in JSON) that records simulation parameters.
-void IsingSimulator::writeMetadata(const std::string &filename, int frozentime, double meanDomainLength) {
-    std::ofstream metaFile(filename);
-    metaFile << "{\n";
-    metaFile << " \"ID\": "<<sim_id <<",\n";
-    metaFile << "  \"temperature\": " << params.temperature << ",\n";
-    metaFile << "  \"avg_mag\": " << params.avg_mag << ",\n";
-    metaFile << "  \"dynamics_type\": \"" << params.dynamics_type << "\",\n";
-    metaFile << "  \"n\": " << params.n << ",\n";
-    metaFile << "  \"R\": " << R << ",\n";
-    metaFile << "  \"Rg\": " << Rg << ",\n";
-    metaFile << "  \"frozentime\": " << frozentime << ",\n";
-    metaFile << "  \"mean_domain_length\": " << meanDomainLength << "\n";
-    metaFile << "}\n";
-    metaFile.close();
-}*/
+
 
 // Run the complete simulation: initialize, build connectivity, run the loop, and write outputs.
 void IsingSimulator::runSimulation(long long unsigned sim_id) {
@@ -222,11 +217,11 @@ int main()
     auto start = std::chrono::system_clock::now();
 
     // Define parameter sets.
-    std::vector<double> temperatures = {0.0001};
-    std::vector<double> avg_mags = {0.75};
+    std::vector<double> temperatures = {0.00001};
+    std::vector<double> avg_mags = {0.6,0.65,0.75,0.8,0.85};
 
     // Connectivity parameters.
-    unsigned int R_init = 55, r_jump = 1, r_size = 5;
+    unsigned int R_init = 10, r_jump = 10, r_size = 5;
     unsigned int Rg_init = 0, rg_jump = 50, rg_size = 1;
 
     // Fixed simulation parameters.

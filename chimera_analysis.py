@@ -10,21 +10,21 @@ import tempfile
 
 
 # config.py
-range=56
+sim_id=0
 debug=False
 # Path to the first input file
-input_file =f"./ising_data/reac_dif_T0/raw/ising_dataR{range}T0.0.dat"
+input_file =f"./ising_data/simulations/{sim_id}.dat"
 
 # Folder for intermediate and final output files
-output_folder = "./ising_data/reac_dif_T0"
+output_folder = "./ising_data/simulations"
 
 # Define output files
-reduced = f"{output_folder}/reduced/reduced{range}.dat"
-domains = f"{output_folder}/domains/domains{range}.dat"
-centroids= f"{output_folder}/centroids/centroids{range}.dat"
-number_changes= f"{output_folder}/changes/changes{range}.dat"
-incoherence= f"{output_folder}/incoherence/incoherence{range}.dat"
-incoherence_matrix= f"{output_folder}/incoherence_matrix/incoherence_matrix{range}.dat"
+reduced = f"{output_folder}/reduced/reduced{sim_id}.dat"
+domains = f"{output_folder}/domains/domains{sim_id}.dat"
+centroids= f"{output_folder}/centroids/centroids{sim_id}.dat"
+number_changes= f"{output_folder}/changes/changes{sim_id}.dat"
+incoherence= f"{output_folder}/incoherence/incoherence{sim_id}.dat"
+incoherence_matrix= f"{output_folder}/incoherence_matrix/incoherence_matrix{sim_id}.dat"
 
 # Create output directories for final outputs only
 for directory in [os.path.dirname(p) for p in [incoherence]]:

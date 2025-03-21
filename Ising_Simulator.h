@@ -48,6 +48,7 @@ private:
 
     // Helper functions.
     void initializeRing();
+    void initializeRingBalanced();
     void buildConnectivity();
     void simulationLoop(const std::string &dataFilename);
     void simulationStep(
