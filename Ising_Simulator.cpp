@@ -218,10 +218,10 @@ int main()
 
     // Define parameter sets.
     std::vector<double> temperatures = {0.00001};
-    std::vector<double> avg_mags = {0.6,0.65,0.75,0.8,0.85};
+    std::vector<double> avg_mags = {0.6,0.65,0.7,0.75,0.8,0.85};
 
     // Connectivity parameters.
-    unsigned int R_init = 10, r_jump = 10, r_size = 5;
+    unsigned int R_init = 9, r_jump = 5, r_size = 10;
     unsigned int Rg_init = 0, rg_jump = 50, rg_size = 1;
 
     // Fixed simulation parameters.
