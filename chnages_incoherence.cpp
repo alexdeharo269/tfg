@@ -119,9 +119,9 @@ vector<int> countDisplacedColumnChanges(const vector<vector<int>>& original_matr
             if (original_matrix[i][j] != original_matrix[i - 1][shifted_index])
                 change_counts[j]++;
         }
-        if (i % 1000 == 0){
-            cout << "Time: " << i/num_rows << "\r";
-        }
+        //if (i % 1000 == 0){
+        //    cout << "Time: " << i/num_rows << "\r";
+        //}
     }
     return change_counts;
 }
@@ -322,6 +322,7 @@ vector<vector<int>> readMatrixFromStdin()
 //   2. The domain centroids file (from the reduced matrix via DBSCAN)
 //   3. The output file for the metrics (columns: index, displaced changes, incoherence)
 //---------------------------------------------------------------------
+
 int main(int argc, char* argv[]) {
     if (argc < 6) {
         cerr << "Usage: " << argv[0] << " <original_file> <centroid_file> <output_file> <incoherence_matrix> <debug_s>" << endl;

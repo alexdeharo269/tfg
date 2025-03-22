@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import sys
 
 ###########################################
 # A custom DBSCAN1D for indices with periodic boundary conditions.
@@ -201,9 +202,9 @@ def write_centroid_matrix(matrix, filename):
 ###########################################
 if __name__ == "__main__":
     # --- File names (adjust paths as needed) ---
-    reduced_matrix_file   = "./ising_data_R_low_temp/reduced_matrix.dat"
-    domain_label_file     = "./ising_data_R_low_temp/domain_labels_dbscan.dat"
-    centroid_matrix_file  = "./ising_data_R_low_temp/domain_centroids_dbscan.dat"
+    reduced_matrix_file   = sys.argv[1]
+    domain_label_file     = sys.argv[2]
+    centroid_matrix_file  = sys.argv[3]
     RV = 5
     
     # --- Read the reduced matrix ---

@@ -1,4 +1,7 @@
-//Programa completo enfocado en el estudio de temperaturas
+// Programa completo enfocado en el estudio de temperaturas
+//////////////////////////////
+// Hay que adaptar el codigo a las nuevas carpetas.
+/////////////////////////////
 
 #include<stdio.h>
 #include<vector>
